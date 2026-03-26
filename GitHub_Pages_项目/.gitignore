@@ -1,0 +1,43 @@
+# 依赖项
+node_modules/
+package-lock.json
+yarn.lock
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 构建输出
+dist/
+build/
+*.min.js
+*.min.css
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 临时文件
+.temp/
+tmp/
+*.tmp
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 导出文件（本地）
+*.pdf
+*.png
+export/
+
+# 系统文件
+Thumbs.db
+.DS_Store
