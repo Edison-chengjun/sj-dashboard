@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>盛合晶微深度研究报告 | 2D/3D封装工艺关键设备清单及国产化替代</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+        .export-toolbar {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .export-toolbar h3 { color: var(--primary); margin-right: auto; font-size: 1.2em; }
+        .export-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+        }
+        .export-btn-pdf { background: linear-gradient(135deg, var(--danger), #c0392b); }
+        .export-btn-png { background: linear-gradient(135deg, var(--info), #2980b9); }
+        .export-btn-all { background: linear-gradient(135deg, var(--success), #229954); }
+        .export-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .export-status { padding: 10px 20px; background: #f0f4ff; border-radius: 8px; color: var(--primary); font-weight: 500; display: none; }
+        .export-status.show { display: block; }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(102,126,234,0.3), rgba(118,75,162,0.3));
+            border-radius: 20px;
+        }
+        .header h1 { font-size: 2.8em; margin-bottom: 15px; background: linear-gradient(135deg, #fff, #a8edea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .header .badge { display: inline-block; padding: 8px 20px; background: linear-gradient(135deg, var(--success), #2ecc71); border-radius: 30px; margin-top: 15px; font-weight: 600; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: rgba(255,255,255,0.95); border-radius: 16px; padding: 25px; text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        .stat-card .value { font-size: 2.5em; font-weight: bold; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card .label { color: #666; font-size: 0.95em; }
+        .stat-card .trend { margin-top: 10px; font-size: 0.9em; color: var(--success); }
+        .card { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 30px; margin-bottom: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+        .card h2 { color: var(--primary); margin-bottom: 25px; font-size: 1.5em; border-bottom: 3px solid var(--primary); padding-bottom: 15px; display: flex; align-items: center; gap: 12px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .full-width { grid-column: 1 / -1; }
+        .chart-container { position: relative; height: 350px; margin-bottom: 20px; }
+        .chart-container-large { position: relative; height: 450px; margin-bottom: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95em; }
+        .data-table th { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px 12px; text-align: left; font-weight: 600; }
+        .data-table td { padding: 14px 12px; border-bottom: 1px solid #eee; }
+        .data-table tr:hover { background: #f8f9ff; }
+        .data-table tr:nth-child(even) { background: #fafbff; }
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline-item { display: flex; margin-bottom: 25px; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: 25px; top: 40px; width: 3px; height: calc(100% + 10px); background: linear-gradient(180deg, var(--primary), var(--secondary)); border-radius: 3px; }
+        .timeline-item:last-child::before { display: none; }
+        .timeline-dot { width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2em; z-index: 1; flex-shrink: 0; box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+        .timeline-content { margin-left: 25px; padding: 20px; background: #f8f9ff; border-radius: 15px; flex: 1; }
+        .timeline-content h3 { color: var(--primary); margin-bottom: 8px; font-size: 1.2em; }
+        .timeline-content p { color: #555; font-size: 0.95em; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 3px solid #eee; flex-wrap: wrap; }
+        .tab-btn { padding: 15px 25px; background: none; border: none; cursor: pointer; font-size: 1em; font-weight: 600; color: #666; border-bottom: 4px solid transparent; transition: all 0.3s ease; }
+        .tab-btn:hover { color: var(--primary); }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .process-flow { display: flex; align-items: center; justify-content: center; margin: 25px 0; flex-wrap: wrap; gap: 15px; }
+        .process-step { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 18px 25px; border-radius: 12px; text-align: center; min-width: 130px; font-weight: 500; box-shadow: 0 5px 20px rgba(102,126,234,0.3); }
+        .process-step .step-num { font-size: 0.85em; opacity: 0.8; margin-bottom: 5px; }
+        .process-arrow { color: var(--primary); font-size: 1.8em; font-weight: bold; }
+        .tech-card { background: #f8f9ff; border-radius: 15px; padding: 20px; margin-bottom: 15px; }
+        .tech-card h4 { color: var(--primary); margin-bottom: 12px; font-size: 1.1em; }
+        .tech-specs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .tech-spec { display: flex; justify-content: space-between; padding: 8px 12px; background: white; border-radius: 8px; }
+        .tech-spec .label { color: #666; }
+        .tech-spec .value { font-weight: 600; color: #2d3748; }
+        .risk-high { background: linear-gradient(135deg, var(--danger), #c0392b); color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; }
+        .risk-medium { background: linear-gradient(135deg, var(--warning), #e67e22); color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; }
+        .risk-low { background: linear-gradient(135deg, var(--success), #27ae60); color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; }
+        .insight-box { background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1)); border-left: 5px solid var(--primary); padding: 20px; margin-top: 20px; border-radius: 0 15px 15px 0; }
+        .insight-box h4 { color: var(--primary); margin-bottom: 10px; }
+        .insight-box p { color: #555; line-height: 1.8; }
+        .vendor-card { background: white; border-radius: 15px; padding: 20px; text-align: center; transition: all 0.3s ease; border: 2px solid transparent; }
+        .vendor-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .vendor-card .name { font-size: 1.2em; font-weight: bold; color: #2d3748; margin-bottom: 8px; }
+        .vendor-card .type { color: var(--primary); font-weight: 500; margin-bottom: 10px; }
+        .vendor-card .products { font-size: 0.9em; color: #666; }
+        @media (max-width: 1200px) { .grid { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .header h1 { font-size: 2em; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .grid-3 { grid-template-columns: 1fr; } .export-toolbar { flex-direction: column; } .chart-container, .chart-container-large { height: 280px; } }
+        @media print { .export-toolbar { display: none; } body { background: white; } .card { box-shadow: none; border: 1px solid #ddd; } }
+        .footer { text-align: center; padding: 30px; color: rgba(255,255,255,0.7); font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="export-toolbar">
+            <h3>📥 导出报告</h3>
+            <button class="export-btn export-btn-pdf" onclick="exportPDF()">📄 导出 PDF</button>
+            <button class="export-btn export-btn-png" onclick="exportPNG()">🖼️ 导出 PNG</button>
+            <button class="export-btn export-btn-all" onclick="exportAll()">📦 全部导出</button>
+            <div class="export-status" id="exportStatus"></div>
+        </div>
+        
+        <div class="header">
+            <h1>🔬 盛合晶微深度研究报告</h1>
+            <p>三维集成与芯粒时代的先进制程封测破局者</p>
+            <div class="badge">📅 2026年3月 | 基于IPO招股书及多方信息整合</div>
+        </div>
+        
+        <!-- 核心指标 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">47亿</div>
+                <div class="label">2024年营收</div>
+                <div class="trend">↑ 55% 同比增长</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">2.14亿</div>
+                <div class="label">2024年净利润</div>
+                <div class="trend">↑ 扭亏为盈</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">70%</div>
+                <div class="label">2年营收复合增长率</div>
+                <div class="trend">行业领先</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">85%</div>
+                <div class="label">国产2.5D市场份额</div>
+                <div class="trend">绝对领先</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">31.79%</div>
+                <div class="label">2025H1毛利率</div>
+                <div class="trend">高于行业平均</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">48亿</div>
+                <div class="label">IPO拟募集资金</div>
+                <div class="trend">科创板</div>
+            </div>
+        </div>
+        
+        <!-- 公司概况 -->
+        <div class="card full-width">
+            <h2>🏢 公司概况</h2>
+            <div class="grid">
+                <div>
+                    <table class="data-table">
+                        <tr><td><strong>公司全称</strong></td><td>盛合晶微半导体（江阴）有限公司</td></tr>
+                        <tr><td><strong>英文名称</strong></td><td>SJ Semiconductor Corporation</td></tr>
+                        <tr><td><strong>总部位置</strong></td><td>江苏省江阴市</td></tr>
+                        <tr><td><strong>成立时间</strong></td><td>2014年（原名：中芯长电）</td></tr>
+                        <tr><td><strong>技术渊源</strong></td><td>中芯国际 + 长电科技合资</td></tr>
+                        <tr><td><strong>股东背景</strong></td><td>大基金、中芯国际、华登等</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <div class="insight-box">
+                        <h4>💡 战略定位</h4>
+                        <p><strong>中国最先进的 2.5D/3D 封装厂</strong>，成功定义并占领"中道封装"市场。中国大陆首家提供14nm先进制程Bumping服务的企业，解决了国产高端芯片"卡脖子"难题。</p>
+                    </div>
+                    <div class="insight-box" style="margin-top: 15px; background: linear-gradient(135deg, rgba(39,174,96,0.1), rgba(46,204,113,0.1)); border-left-color: #27ae60;">
+                        <h4 style="color: #27ae60;">🏆 行业地位</h4>
+                        <p>2024年已跻身<strong>全球前十大OSAT企业</strong>行列，在中国大陆先进制程封装领域确立显著领先地位。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 营收趋势 -->
+        <div class="card full-width">
+            <h2>📈 营收与利润趋势</h2>
+            <div class="chart-container-large">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- 营收结构 -->
+        <div class="card full-width">
+            <h2>📊 芯粒集成收入占比演变</h2>
+            <div class="chart-container">
+                <canvas id="revenueMixChart"></canvas>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr><th>年份</th><th>芯粒集成收入(亿元)</th><th>总收入(亿元)</th><th>占比</th><th>净利润(亿元)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>2022年</td><td>0.87</td><td>16.33</td><td><span class="risk-medium">5.32%</span></td><td style="color: #e74c3c;">-3.29</td></tr>
+                    <tr><td>2023年</td><td>-</td><td>30.38</td><td><span class="risk-medium">-</span></td><td style="color: #27ae60;">0.34</td></tr>
+                    <tr><td>2024年</td><td>20.89</td><td>47.05</td><td><span class="risk-low">44.39%</span></td><td style="color: #27ae60;">2.14</td></tr>
+                    <tr><td>2025H1</td><td>17.87</td><td>31.78</td><td><span class="risk-low">56.24%</span></td><td style="color: #27ae60;">4.35</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 核心技术平台 -->
+        <div class="card full-width">
+            <h2>🔧 核心技术平台</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-posersi')">SmartPoser-Si (2.5D)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-poser')">SmartPoser-RDL</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-pop')">SmartPoser-POP</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-aip')">SmartAiP (5G)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-3dic')">3DIC-HB</button>
+            </div>
+            
+            <div id="tab-posersi" class="tab-content active">
+                <div class="grid">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">🎯 2.5D/TSV 高性能封装平台</h3>
+                        <p style="color: #555; margin-bottom: 15px;">盛合晶微在高性能计算领域的核心护城河，主要用于集成逻辑芯粒与HBM，是AI芯片的主流方案。</p>
+                        <div class="tech-card">
+                            <h4>📋 技术规格</h4>
+                            <div class="tech-specs">
+                                <div class="tech-spec"><span class="label">RDL线宽/线距</span><span class="value">2μm / 2μm</span></div>
+                                <div class="tech-spec"><span class="label">互联层数</span><span class="value">4P4M</span></div>
+                                <div class="tech-spec"><span class="label">最大集成尺寸</span><span class="value">4×光罩 (~85×85mm)</span></div>
+                                <div class="tech-spec"><span class="label">TSV直径</span><span class="value">10μm (目标5μm)</span></div>
+                                <div class="tech-spec"><span class="label">深宽比</span><span class="value">10:1 (目标20:1)</span></div>
+                                <div class="tech-spec"><span class="label">可集成芯片</span><span class="value">8颗 (1P逻辑+7HBM)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="insight-box">
+                            <h4>🚀 核心优势</h4>
+                            <p>• <strong>极高布线密度</strong>：支持复杂电路互联<br>• <strong>多层级路由</strong>：最多4层金属布线<br>• <strong>大面积集成</strong>：突破单芯片尺寸限制<br>• <strong>优异散热</strong>：优于行业标准的减薄厚度</p>
+                        </div>
+                        <div class="insight-box" style="margin-top: 15px; background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(192,57,43,0.1)); border-left-color: #e74c3c;">
+                            <h4 style="color: #e74c3c;">⚠️ 市场地位</h4>
+                            <p>2024年已实现规模化量产，主要服务于国内顶尖的算力芯片客户（如客户A）。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-poser" class="tab-content">
+                <div class="grid">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">🎯 扇出型封装平台</h3>
+                        <p style="color: #555; margin-bottom: 15px;">针对移动终端和物联网设备对轻薄、高性能的追求，开发了大尺寸扇出型技术。</p>
+                        <div class="tech-card">
+                            <h4>📋 技术规格</h4>
+                            <div class="tech-specs">
+                                <div class="tech-spec"><span class="label">晶圆尺寸</span><span class="value">12英寸 (300mm)</span></div>
+                                <div class="tech-spec"><span class="label">芯片尺寸</span><span class="value">0.5×0.5~15×15mm</span></div>
+                                <div class="tech-spec"><span class="label">封装厚度</span><span class="value">0.3~1.0mm</span></div>
+                                <div class="tech-spec"><span class="label">RDL L/S</span><span class="value">2μm/2μm (先进)</span></div>
+                                <div class="tech-spec"><span class="label">最大层数</span><span class="value">4层</span></div>
+                                <div class="tech-spec"><span class="label">I/O扩展</span><span class="value">2000+</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="insight-box">
+                            <h4>🚀 核心优势</h4>
+                            <p>• <strong>无偏差拼接</strong>：多块掩模版精准拼接<br>• <strong>低翘曲控制</strong>：有机转接板变形控制<br>• <strong>异构集成</strong>：支持4个以上功能芯片<br>• <strong>应用场景</strong>：高端手机AP、RF前端模组</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-pop" class="tab-content">
+                <div class="grid">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">🎯 3D堆叠封装平台</h3>
+                        <p style="color: #555; margin-bottom: 15px;">支持多层芯片的三维堆叠，主要应用于高端智能手机应用处理器及可穿戴设备芯片。</p>
+                        <div class="tech-card">
+                            <h4>📋 技术规格</h4>
+                            <div class="tech-specs">
+                                <div class="tech-spec"><span class="label">堆叠层数</span><span class="value">最多4层 (目标8+)</span></div>
+                                <div class="tech-spec"><span class="label">键合方式</span><span class="value">微凸点/混合键合</span></div>
+                                <div class="tech-spec"><span class="label">微凸点间距</span><span class="value">40μm</span></div>
+                                <div class="tech-spec"><span class="label">TSV直径</span><span class="value"><10μm</span></div>
+                                <div class="tech-spec"><span class="label">垂直互连密度</span><span class="value">10⁴~10⁶/mm²</span></div>
+                                <div class="tech-spec"><span class="label">应用场景</span><span class="value">HBM堆叠、3D SoC</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="insight-box">
+                            <h4>🚀 核心优势</h4>
+                            <p>• <strong>垂直集成</strong>：充分利用垂直维度<br>• <strong>高密度互连</strong>：垂直互连密度极高<br>• <strong>短信号路径</strong>：降低延迟和功耗<br>• <strong>小型化</strong>：适用于可穿戴设备</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-aip" class="tab-content">
+                <div class="grid">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">🎯 5G毫米波天线封装</h3>
+                        <p style="color: #555; margin-bottom: 15px;">在封装体内集成5G毫米波天线、芯片及电压转换元件，完美契合超薄5G手机设计需求。</p>
+                        <div class="tech-card">
+                            <h4>📋 技术规格</h4>
+                            <div class="tech-specs">
+                                <div class="tech-spec"><span class="label">频率范围</span><span class="value">24~43GHz</span></div>
+                                <div class="tech-spec"><span class="label">信号类型</span><span class="value">超宽带</span></div>
+                                <div class="tech-spec"><span class="label">功耗</span><span class="value">更低</span></div>
+                                <div class="tech-spec"><span class="label">增益</span><span class="value">更高</span></div>
+                                <div class="tech-spec"><span class="label">廓形</span><span class="value">更薄</span></div>
+                                <div class="tech-spec"><span class="label">应用</span><span class="value">超薄5G手机</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="insight-box">
+                            <h4>🚀 核心优势</h4>
+                            <p>• <strong>一体化封装</strong>：天线+芯片+电源集成<br>• <strong>超宽带支持</strong>：覆盖主流5G频段<br>• <strong>超薄设计</strong>：完美适配高端手机<br>• <strong>低功耗高增益</strong>：性能领先</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tab-3dic" class="tab-content">
+                <div class="grid">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">🎯 3DIC-HB 混合键合技术</h3>
+                        <p style="color: #555; margin-bottom: 15px;">迈向后摩尔时代巅峰的关键技术，采用铜-铜直接键合代替传统焊球微凸块。</p>
+                        <div class="tech-card">
+                            <h4>📋 技术规格</h4>
+                            <div class="tech-specs">
+                                <div class="tech-spec"><span class="label">键合方式</span><span class="value">混合键合 (Hybrid Bonding)</span></div>
+                                <div class="tech-spec"><span class="label">互联间距</span><span class="value"><10μm</span></div>
+                                <div class="tech-spec"><span class="label">Micro-TSV</span><span class="value">开口<5μm</span></div>
+                                <div class="tech-spec"><span class="label">亚微米互联</span><span class="value">铜互联结构</span></div>
+                                <div class="tech-spec"><span class="label">堆叠层数</span><span class="value">3层及以上</span></div>
+                                <div class="tech-spec"><span class="label">状态</span><span class="value">全流程验证完成</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="insight-box">
+                            <h4>🚀 核心优势</h4>
+                            <p>• <strong>极窄互联间距</strong>：<10μm，大幅提升带宽<br>• <strong>铜-铜直接键合</strong>：代替传统焊球<br>• <strong>极低延迟</strong>：缩短信号传输路径<br>• <strong>高密度垂直互连</strong>：Micro-TSV开口<5μm</p>
+                        </div>
+                        <div class="insight-box" style="margin-top: 15px; background: linear-gradient(135deg, rgba(39,174,96,0.1), rgba(46,204,113,0.1)); border-left-color: #27ae60;">
+                            <h4 style="color: #27ae60;">✅ 进展状态</h4>
+                            <p>已完成全流程验证，正在向规模化量产迈进，将成为HBM4时代的核心技术。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 工艺流程 -->
+        <div class="card full-width">
+            <h2>🔄 2D/3D 封装工艺流程</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'flow-2d')">2D Fan-out</button>
+                <button class="tab-btn" onclick="switchTab(event, 'flow-25d')">2.5D CoWoS</button>
+                <button class="tab-btn" onclick="switchTab(event, 'flow-3d')">3D IC</button>
+            </div>
+            
+            <div id="flow-2d" class="tab-content active">
+                <div class="process-flow">
+                    <div class="process-step"><div class="step-num">Step 1</div>晶圆清洗<br><small style="opacity:0.7">35%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step"><div class="step-num">Step 2</div>晶圆减薄<br><small style="opacity:0.7">40%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step"><div class="step-num">Step 3</div>RDL布线<br><small style="opacity:0.7">19%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step"><div class="step-num">Step 4</div>植球<br><small style="opacity:0.7">25%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step"><div class="step-num">Step 5</div>切割<br><small style="opacity:0.7">20%</small></div>
+                </div>
+                <p style="text-align:center;color:#666;margin-top:15px;">应用：手机AP、PMIC、RF芯片 | RDL L/S: 5μm/5μm (标准)</p>
+            </div>
+            
+            <div id="flow-25d" class="tab-content">
+                <div class="process-flow">
+                    <div class="process-step"><div class="step-num">Step 1</div>晶圆清洗<br><small style="opacity:0.7">35%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step" style="background:linear-gradient(135deg, #e74c3c, #c0392b);"><div class="step-num">Step 2</div>DRIE刻蚀<br><small style="opacity:0.7">8%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step"><div class="step-num">Step 3</div>TSV填充<br><small style="opacity:0.7">12%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step"><div class="step-num">Step 4</div>CMP抛光<br><small style="opacity:0.7">30%</small></div>
+                </div>
+                <div class="process-flow">
+                    <div class="process-step"><div class="step-num">Step 5</div>RDL布线<br><small style="opacity:0.7">19%</small></div>
+                    <div class="process-arrow">→</div>
+                    <div class="process-step" style="background:linear-gradient(135deg, #e74c3c, #c0392b);"><div class="step-num">Step 6</div>热压键合<br><small style="opacity:0.7">0%</small></div>
+                    <div class="process-arrow
