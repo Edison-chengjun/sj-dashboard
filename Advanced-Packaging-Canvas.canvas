@@ -1,311 +1,417 @@
 {
   "nodes": [
     {
-      "id": "a1b2c3d4e5f60001",
-      "type": "group",
-      "x": -100,
-      "y": -300,
-      "width": 1100,
-      "height": 600,
-      "color": "5",
-      "label": "📦 第一部分：基础概念与驱动因素"
-    },
-    {
-      "id": "a1b2c3d4e5f60002",
+      "id": "0000000000000001",
       "type": "text",
-      "x": 0,
-      "y": -260,
-      "width": 340,
-      "height": 180,
-      "color": "1",
-      "text": "## 为什么需要先进封装\n\n**三大驱动因素：**\n\n### ⚡ 带宽需求\n- GPU算力爆发，内存墙问题严重\n- HBM3E 1.2TB/s  vs 需求 4-10TB/s\n- PCB线宽限制 → 封装内高密度互连\n\n### 🔋 功耗问题\n- 数据搬运能耗占比 **>60%**\n- 计算仅占 40%\n- 互连距离决定功耗\n\n### 💰 成本控制\n- 摩尔定律放缓，单芯片良率下降\n- Chiplet降低流片成本"
-    },
-    {
-      "id": "a1b2c3d4e5f60003",
-      "type": "text",
-      "x": 360,
-      "y": -260,
-      "width": 300,
-      "height": 180,
-      "color": "2",
-      "text": "## 异构集成定义\n\n> 业界最混乱的术语\n\n**本知识库定义：**\n在单一封装内集成多个**不同功能**的元件\n\n**集成类型：**\n- 🔧 多芯粒 Chiplet\n- 💾 芯片+存储器\n- 💡 芯片+光学元件\n- 📡 芯片+无源器件"
-    },
-    {
-      "id": "a1b2c3d4e5f60004",
-      "type": "text",
-      "x": 680,
-      "y": -260,
-      "width": 280,
-      "height": 180,
-      "color": "3",
-      "text": "## 封装类型谱系\n\n| 类型 | 英文 | 应用 |\n|------|------|------|\n| 倒装芯片 | Flip Chip | 高端GPU |\n| 晶圆级 | WLP | 移动处理器 |\n| 2.5D | Interposer | HBM+GPU |\n| 3D堆叠 | 3D IC | HBM,CIS |\n| 系统级 | SiP | 射频,IoT |\n| 芯粒 | Chiplet | HPC |\n\n**核心价值：**\n延续摩尔定律的主要路径"
-    },
-    {
-      "id": "b2c3d4e5f5a60005",
-      "type": "group",
-      "x": 1020,
-      "y": -300,
+      "x": 380,
+      "y": -500,
       "width": 900,
-      "height": 600,
-      "color": "6",
-      "label": "🔗 第二部分：键合技术演进"
-    },
-    {
-      "id": "b2c3d4e5f5a60006",
-      "type": "text",
-      "x": 1040,
-      "y": -260,
-      "width": 400,
-      "height": 220,
+      "height": 200,
       "color": "5",
-      "text": "## 键合技术进化论\n\n```\n引线键合 → C4 Bump → TCB → 铜柱 → 混合键合\n    50-100μm    250-800μm  50-150μm  10-50μm   0.4μm\n```\n\n### 混合键合 (Hybrid Bonding)\n**核心原理：** Cu-Cu直接接触，无需焊料\n\n| 指标 | 数值 |\n|------|------|\n| Pitch | **0.4 μm** |\n| 功耗降低 | **30-50%** |\n| 延迟降低 | **40%** |\n| 带宽密度 | **>10 TB/mm²** |\n| 良率 | ~70-80% |\n\n⚠️ 挑战：表面极度平坦，对准<300nm"
+      "text": "# 🏭 先进封装行业设备产业链全景\n\n**Advanced Packaging Equipment Industry Map**\n\n核心驱动力：AI算力需求爆发 → HBM + 2.5D/3D封装成为算力瓶颈 → 设备订单井喷\n\n市场规模：先进封装设备 2024年 ~270亿美元 | 2028年（E）~500亿美元\n增速最快细分赛道：封装设备 > 晶圆设备 > IC设计"
     },
     {
-      "id": "b2c3d4e5f5a60007",
-      "type": "text",
-      "x": 1460,
-      "y": -260,
-      "width": 420,
-      "height": 220,
-      "color": "4",
-      "text": "## Interposer材料对比\n\n| 材料 | 优势 | 劣势 | 状态 |\n|------|------|------|------|\n| **硅** | 密度最高 | 成本最高 | ✅已量产 |\n| **玻璃** | 低介电 | TGV难 | 🔬研发 |\n| **有机** | 成本低 | 密度受限 | 🔬早期 |\n| **主动** | 集成晶体管 | 设计复杂 | 🚫未量产 |\n\n**硅桥（Intel EMIB）：**\n- 嵌入有机基板的硅片\n- 提供高密度die-to-die互连"
-    },
-    {
-      "id": "c3d4e5f6a6b60008",
+      "id": "0000000000000002",
       "type": "group",
-      "x": -100,
-      "y": 320,
-      "width": 1200,
-      "height": 650,
-      "color": "1",
-      "label": "🧠 第三部分：HBM与存储封装"
+      "x": -800,
+      "y": -280,
+      "width": 720,
+      "height": 1600,
+      "label": "🌐 全球设备龙头 | Global Equipment Giants",
+      "color": "5"
     },
     {
-      "id": "c3d4e5f6a6b60009",
+      "id": "0000000000000003",
       "type": "text",
-      "x": 0,
-      "y": 360,
-      "width": 350,
-      "height": 280,
-      "color": "5",
-      "text": "## HBM技术演进时间轴\n\n### 带宽进化\n```\nHBM2   →  256 GB/s    2016\nHBM2E  →  326 GB/s    2020  \nHBM3   →  819 GB/s    2022\nHBM3E  →  1.2 TB/s    2024\nHBM4   →  ~1.5 TB/s   2026\nHBM4E  →  ~2.0 TB/s   2027\nHBM5   →  >2.5 TB/s   2028+\n```\n\n### 市场预测 (Yole)\n- 2024: **$170亿**\n- 2030: **$980亿**\n- CAGR: **33%** 🔥"
+      "x": -780,
+      "y": -250,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇺🇸 Applied Materials（AMAT）\n**应用材料 | NASDAQ: AMAT**\n\n核心设备：\n• EnABLE® Interposer金属化系统\n• VIIsta® TSV刻蚀系统（深宽比10:1）\n• Centris™ 刻蚀/沉积平台\n\n竞争优势：平台型布局最完整\n先进封装业务占比：~8% | 增速：+35% YoY\n\n**投资逻辑：** 台积电/三星/Intel核心供应商"
     },
     {
-      "id": "c3d4e5f6a6b60010",
+      "id": "0000000000000004",
       "type": "text",
-      "x": 370,
-      "y": 360,
-      "width": 350,
-      "height": 280,
-      "color": "2",
-      "text": "## GPU-DRAM集成三阶段\n\n### 阶段一：2.5D扩容期\n**时间：2024-2026**\n- HBM3E + CoWoS-L 组合\n- 单卡12颗 HBM (B200)\n- 带宽突破 8 TB/s\n\n### 阶段二：局部3D化\n**时间：2027-2029**\n- GPU上方堆叠 SRAM Die\n- Hybrid Bonding 商用 (HBM4E)\n- 带宽密度提升 **3倍**\n\n### 阶段三：全3D一体化\n**时间：2030+**\n- HBM直连GPU之上\n- Compute-in-Memory (CiM)\n- 带宽密度 **>10 TB/mm²**"
+      "x": -780,
+      "y": 10,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇺🇸 Lam Research（LRCX）\n**泛林半导体 | NASDAQ: LRCX**\n\n核心设备：\n• Versys® Metal TSV金属化工具\n• Flex® 3D堆叠刻蚀系统\n• Coronus® 背面钝化系统\n\n竞争优势：TSV深硅刻蚀技术领先\n先进封装业务占比：~10% | 增速：+30% YoY\n\n**投资逻辑：** 客户分散，TSV刻蚀龙头"
     },
     {
-      "id": "c3d4e5f6a6b60011",
+      "id": "0000000000000005",
       "type": "text",
-      "x": 740,
-      "y": 360,
-      "width": 330,
-      "height": 280,
-      "color": "3",
-      "text": "## 海外厂商3D路线\n\n| 厂商 | 当前技术 | 3D时间表 | 战略 |\n|------|---------|---------|------|\n| NVIDIA | CoWoS+HBM3E | 2026局部3D<br/>2030全3D | 保守蓄势 |\n| Intel | Foveros | **2027全3D** | 最激进🔥 |\n| AMD | MI300X 3D | 2025-2026 | Chiplet先行 |\n| SK海力士 | HBM3E MR-MUF | 2026 HBM4<br/>2027 HB | HB领先 |\n| 三星 | X-Cube | 2025 HBM4 | NCF+HCB |\n\n**技术拐点：**\nHBM4高度限制放宽→Microbump延续至HBM4，HB从HBM4E开始"
+      "x": -780,
+      "y": 270,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇺🇸 KLA Corporation（KLAC）\n**科磊 | NASDAQ: KLAC**\n\n核心设备：\n• ICOS® 封装缺陷检测系统\n• Kronos™ 3D封装TSV检测\n• Surfscan® 晶圆表面检测\n\n竞争优势：封装检测市场份额>40%\n先进封装业务占比：~12% | 增速：+28% YoY\n\n**投资逻辑：** 质量控制必备，台积电/日月光核心"
     },
     {
-      "id": "d4e5f6a7b8c60012",
+      "id": "0000000000000006",
+      "type": "text",
+      "x": -780,
+      "y": 530,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇺🇸 Kulicke & Soffa（KLIC）\n**库利克特 | NASDAQ: KLIC**\n\n核心设备：\n• LITEX-8950 混合键合系统\n• Series 8600/8900 楔形键合机\n• APAMA® 晶圆级封装系统\n\n竞争优势：HBM键合精度±0.5μm（业界最高）\n先进封装业务占比：~45%（最纯正！）| 增速：+42% YoY\n\n**投资逻辑：** 深度绑定SK海力士/台积电，HBM4核心"
+    },
+    {
+      "id": "0000000000000007",
+      "type": "text",
+      "x": -780,
+      "y": 790,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇯🇵 Tokyo Electron（TEL）\n**东京电子 | TYO: 8035**\n\n核心设备：\n• 300mm 涂布/显影/刻蚀系统\n• DtC® 热压键合系统（TCB）\n• Screenedge® 研磨系统\n\n竞争优势：日本市场垄断，热压键合是TSMC CoWoS核心\n先进封装业务占比：~9% | 增速：+25% YoY\n\n**投资逻辑：** 日本封装厂100%日资设备依赖"
+    },
+    {
+      "id": "0000000000000008",
+      "type": "text",
+      "x": -780,
+      "y": 1050,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇯🇵 DISCO Corporation\n**迪思科 | TYO: 6146**\n\n核心设备：\n• 激光切割系统（精度±5μm）\n• 刀片切割系统（超薄晶圆）\n• 研磨抛光系统（减薄至50μm以下）\n\n竞争优势：切割设备全球市场份额>70%\nAI芯片封装切割：近乎100%垄断\n\n**投资逻辑：** 隐形冠军，切割无直接竞争对手"
+    },
+    {
+      "id": "0000000000000009",
+      "type": "text",
+      "x": -780,
+      "y": 1310,
+      "width": 680,
+      "height": 160,
+      "text": "## 🇪🇺 ASM International（ASMI）\n**ASM太平洋 | ENAMsterdam: ASM**\n\n核心设备：\n• A400/A412 MOCVD系统（TSV/RDL沉积）\n• Diamond Precise™ TCB热压键合\n• Proteus® 晶圆级封装系统\n\n竞争优势：Fan-out设备业界领先\n先进封装业务占比：~18%（集团）| 增速：+30% YoY\n\n**投资逻辑：** 台积电CoWoS核心供应商，欧洲最纯正封装设备"
+    },
+    {
+      "id": "0000000000000010",
       "type": "group",
-      "x": 1120,
-      "y": 320,
+      "x": 60,
+      "y": -280,
+      "width": 720,
+      "height": 1620,
+      "label": "🔬 核心技术路线 | Core Technology Routes",
+      "color": "2"
+    },
+    {
+      "id": "0000000000000011",
+      "type": "text",
+      "x": 80,
+      "y": -250,
+      "width": 680,
+      "height": 180,
+      "text": "## 2.5D Interposer（中介层封装）\n**代表技术：CoWoS-S/L | I-Cube | EMIB**\n\n```\n    [Logic Die]  [HBM Stack]\n         ↘         ↙\n      ┌──────────────┐\n      │  Interposer  │  ← 硅中介层，含TSV\n      │  (UBM/μbump) │\n      └──────────────┘\n            ↓\n    [Package Substrate]\n```\n\n**核心设备需求：**\n• TSV刻蚀机（AMAT/LRCX/AMEC）\n• Interposer金属化（PVD/CVD: AMAT/TEL）\n• 热压键合TCB（KLIC/ASMI/TEL）\n• 临时载片键合/解键合"
+    },
+    {
+      "id": "0000000000000012",
+      "type": "text",
+      "x": 80,
+      "y": 30,
+      "width": 680,
+      "height": 200,
+      "text": "## 3D Stacking（3D堆叠封装）\n**代表技术：SoIC-WoW | SoIC-CoW | HBM3E堆叠 | X-Cube**\n\n```\n    ┌─────────────┐\n    │   HBM Die 8 │  ← 12层DRAM堆叠\n    ├─────────────┤\n    │   HBM Die 7 │\n    ├─────────────┤\n    │   HBM Die 1 │\n    ├════════─────┤\n    │  Logic Die  │  ← GPU/CPU\n    └─────────────┘\n    混合键合: Cu-Cu Direct Bond\n```\n\n**核心设备需求：**\n• 混合键合设备（KLIC最新精度±0.5μm）\n• 晶圆减薄设备（减薄至50μm以下）\n• TSV制造全套（刻蚀+沉积+填充）"
+    },
+    {
+      "id": "0000000000000013",
+      "type": "text",
+      "x": 80,
+      "y": 330,
+      "width": 680,
+      "height": 180,
+      "text": "## Fan-out WLP（扇出型晶圆级封装）\n**代表技术：InFO | eWLB | FO-EB | INFO**\n\n```\n  Chip → 重建晶圆 → 塑封 → 切割\n  [Die]   [Recon]   [Mold]  [Saw]\n         RDL重分布层\n```\n\n**核心设备需求：**\n• 晶圆重构设备（Recon）\n• 包封成型（Compression Molding）\n• RDL制造设备（PVD/CVD+刻蚀）\n• 植球设备（Bumping）\n• 切割设备（DISCO）"
+    },
+    {
+      "id": "0000000000000014",
+      "type": "text",
+      "x": 80,
+      "y": 610,
+      "width": 680,
+      "height": 160,
+      "text": "## Chiplet（小芯片）互连标准\n**UCle 1.0/2.0 标准化**\n\n```\n[CPU Chiplet] ──UCle── [IO Chiplet]\n     ↕                    ↕\n[GPU Chiplet] ──UCle── [HBM Chiplet]\n```\n\n**核心设备需求：**\n• SerDes PHY芯片制造（RF/高速测试）\n• KLA/Teradyne Chiplet测试平台\n• 高精度互联验证设备\n\n**催化剂：** AMD、Intel、NVIDIA跨厂商Chiplet互连"
+    },
+    {
+      "id": "0000000000000015",
+      "type": "text",
+      "x": 80,
+      "y": 870,
+      "width": 680,
+      "height": 160,
+      "text": "## 键合技术对比 | Bonding Technology\n\n| 技术 | 精度 | 温度 | 代表应用 | 龙头设备商 |\n|------|------|------|---------|-----------|\n| 热压键合TCB | ±1μm | 250-400°C | CoWoS | TEL/ASMI |\n| 混合键合 | ±0.5μm | <250°C | HBM/SoIC | KLIC(独家) |\n| 熔焊键合 | ±3μm | >300°C | 成熟封装 | ASMI |\n| 瞬时液相键合 | ±2μm | 200-300°C |功率半导 | Kulicke |\n\n**HBM4趋势：** 混合键合精度要求从±1μm→±0.5μm，KLIC绝对领先"
+    },
+    {
+      "id": "0000000000000016",
+      "type": "text",
+      "x": 80,
+      "y": 1130,
+      "width": 680,
+      "height": 160,
+      "text": "## HBM（高带宽内存）封装全流程\n\n```\nStep 1: TSV晶圆  → Step 2: DRAM KGD  → Step 3: 3D堆叠\n [长江存储]       [合肥长鑫]           [SK海力士]\n\nStep 4: 与Logic Die键合  →  Step 5: 塑封测试  →  Step 6: 切割\n   [台积电CoWoS]              [日月光]              [DISCO]\n\n设备需求：TSV刻蚀→减薄→清洗→键合→检测→切割\n全流程价值量分布：键合(35%) > 检测(20%) > TSV(15%) > 其他\n```"
+    },
+    {
+      "id": "0000000000000017",
+      "type": "group",
+      "x": 920,
+      "y": -280,
+      "width": 720,
+      "height": 1620,
+      "label": "🇨🇳 中国设备公司 | China Equipment (国产替代)",
+      "color": "4"
+    },
+    {
+      "id": "0000000000000018",
+      "type": "text",
+      "x": 940,
+      "y": -250,
+      "width": 680,
+      "height": 180,
+      "text": "## 北方华创 NAURA\n**股票: 002371.SZ | A股**\n\n核心产品：\n• ICP/CCP刻蚀机（8-12寸）→ TSV刻蚀\n• PVD/CVD沉积系统 → Interposer金属化\n• 热处理设备（退火、氧化）\n\n**进展：**\n• 28nm TSV刻蚀机已通过验证\n• 2024年先进封装新订单 ~15亿元\n• 正在研发混合键合设备（目标2026）\n\n估值：PE 2025E ~40x\n**投资逻辑：** 平台型龙头 + 国产替代"
+    },
+    {
+      "id": "0000000000000019",
+      "type": "text",
+      "x": 940,
+      "y": 10,
+      "width": 680,
+      "height": 160,
+      "text": "## 中微公司 AMEC\n**股票: 688012.SH | 科创板**\n\n核心产品：\n• CCP刻蚀机 → TSV深硅刻蚀（深宽比领先）\n• ICP刻蚀机 → RDL刻蚀\n• MOCVD → LED封装\n\n**进展：**\n• 12寸TSV刻蚀机已小批量出货\n• 正在开发混合键合设备\n\n**投资逻辑：** 刻蚀技术国内领先，中芯国际核心客户"
+    },
+    {
+      "id": "0000000000000020",
+      "type": "text",
+      "x": 940,
+      "y": 270,
+      "width": 680,
+      "height": 160,
+      "text": "## 华海清科 HTEC\n**股票: 688120.SH | 科创板**\n\n核心产品：\n• CMP（化学机械抛光）设备 → 晶圆全局平坦化\n• 减薄抛光一体机 → HBM/3D堆叠减薄\n\n**进展：**\n• 先进封装业务占比：~25%（2024年）\n• 国内封装厂CMP国产化率 <20%\n\n**投资逻辑：** CMP是HBM和3D堆叠必经工序，国产替代空间巨大"
+    },
+    {
+      "id": "0000000000000021",
+      "type": "text",
+      "x": 940,
+      "y": 530,
+      "width": 680,
+      "height": 160,
+      "text": "## 盛美半导体 ACM Research\n**股票: 688082.SH | ACMR（美股）**\n\n核心产品：\n• 兆声波清洗设备 → TSV/RDL清洗，颗粒去除率>99.9%\n• 湿法腐蚀设备 → 先进封装剥离/蚀刻\n• 电镀设备（ECP）→ TSV金属填充\n\n**竞争优势：**\n• 兆声波清洗技术全球领先\n• SK海力士/三星/Intel合格供应商\n\n**投资逻辑：** 国内封装厂清洗设备国产替代主力；ACMR估值更低"
+    },
+    {
+      "id": "0000000000000022",
+      "type": "text",
+      "x": 940,
+      "y": 790,
+      "width": 680,
+      "height": 160,
+      "text": "## 拓荆科技 Pojieshan\n**股票: 688072.SH | 科创板**\n\n核心产品：\n• PECVD/ALD系统 → TSV绝缘层、Interposer介质层\n• 等离子体增强CVD → Fan-out RDL\n\n**客户：** 长江存储、合肥长鑫、国内主要封装厂\n\n**投资逻辑：** CVD/ALD设备国内领先，受益存储和封装双重扩产"
+    },
+    {
+      "id": "0000000000000023",
+      "type": "text",
+      "x": 940,
+      "y": 1050,
+      "width": 680,
+      "height": 160,
+      "text": "## 国产封装厂设备需求对比\n\n| 封装厂 | 主要技术 | 核心设备需求 | 主要供应商 |\n|--------|----------|-------------|-----------|\n| 长电科技 | FCCSP/SiP/Fan-out | TCB/CMP/检测 | ASMI/KLA/AMAT |\n| 华天科技 | BGA/QFN/Fan-out | 键合机/切割/测试 | KLIC/DISCO |\n| 通富微电 | AMD CPU/GPU封装 | 混合键合/测试 | TSMC供应链 |\n| 中芯国际 | 成熟制程+先进封装 | 国产设备比例提升 | NAURA/AMEC/ACM |\n\n**关键数据：** 中国先进封装设备国产化率 2024年 ~18% → 2028年目标 ~35%"
+    },
+    {
+      "id": "0000000000000024",
+      "type": "group",
+      "x": -800,
+      "y": 1380,
+      "width": 2440,
+      "height": 320,
+      "label": "💰 投资机会 | Investment Opportunities & Risks",
+      "color": "1"
+    },
+    {
+      "id": "0000000000000025",
+      "type": "text",
+      "x": -780,
+      "y": 1410,
       "width": 800,
-      "height": 650,
-      "color": "4",
-      "label": "🏭 第四部分：材料与设备"
+      "height": 280,
+      "text": "## ⭐ 一级机会：全球龙头\n\n**Kulicke & Soffa (KLIC)**\n• 最纯正的先进封装设备股\n• HBM4键合精度壁垒最高（±0.5μm）\n• 深度绑定SK海力士HBM4\n• 估值：PE ~18x，合理偏低\n\n**DISCO (空股)**\n• 切割设备全球>70%份额\n• AI封装切割近乎100%垄断\n• 无直接竞争对手\n\n**KLA Corporation (KLAC)**\n• 先进封装检测必备\n• AI驱动的检测需求持续增加\n• 高毛利率（63%）"
     },
     {
-      "id": "d4e5f6a7b8c60013",
+      "id": "0000000000000026",
       "type": "text",
-      "x": 1140,
-      "y": 360,
-      "width": 370,
-      "height": 270,
-      "color": "2",
-      "text": "## 关键材料供应商\n\n### 塑封材料\n| 供应商 | 国产替代 |\n|--------|---------|\n| Sumitomo Bakelite | 宏昌电子 |\n| Panasonic | 华海诚科 |\n| Henkel | 德高化成 |\n\n### 键合材料\n| 供应商 | 国产替代 |\n|--------|---------|\n| Senju Metal (焊球) | 尽快电子 |\n| 3M/Brewer (键合胶) | 飞凯材料 |\n| JSR (PI) | 鼎龙控股 |\n\n### ABF薄膜\nAjinomoto独家主导，**暂无国产替代**⚠️"
+      "x": 120,
+      "y": 1410,
+      "width": 800,
+      "height": 280,
+      "text": "## ⭐ 二级机会：中国国产替代\n\n**北方华创 (002371.SZ)**\n• 平台型龙头，TSV设备国内领先\n• 估值偏高（PE~40x）但订单可见\n• 目标：2026年混合键合设备验证\n\n**盛美半导体 (688082.SH/ACMR)**\n• 兆声波清洗全球竞争力\n• ACMR美股估值折价明显\n• 深度绑定SK海力士/三星\n\n**华海清科 (688120.SH)**\n• CMP设备国产替代空间大\n• HBM需求直接拉动CMP订单"
     },
     {
-      "id": "d4e5f6a7b8c60014",
+      "id": "0000000000000027",
       "type": "text",
-      "x": 1530,
-      "y": 360,
-      "width": 360,
-      "height": 270,
-      "color": "1",
-      "text": "## 关键设备供应商\n\n### 沉积/刻蚀\n| 全球龙头 | 国产替代 |\n|---------|---------|\n| AMAT, Lam, TEL | 北方华创, 中微 |\n\n### CMP设备\n| 全球龙头 | 国产替代 |\n|---------|---------|\n| AMAT, Ebara | 华海清科 |\n\n### Hybrid Bonder\n| 全球龙头 | 国产替代 |\n|---------|---------|\n| EVG, Besi | **华海清科** 🔥 |\n\n### 检测设备\n| 全球龙头 | 国产替代 |\n|---------|---------|\n| KLA (60%市占) | 中科飞测, 精测 |\n\n> 国产化率：**16.4%**，空间巨大"
+      "x": 1020,
+      "y": 1410,
+      "width": 580,
+      "height": 280,
+      "text": "## ⚠️ 核心风险\n\n1. **AI资本开支周期风险**\n   → 若AI芯片需求放缓，扩产延后\n\n2. **HBM竞争格局变化**\n   → SK海力士/三星/美光竞争影响封装需求\n\n3. **美国对华设备出口管制**\n   → 封装设备可能受限（14nm以下）\n\n4. **技术路线变化**\n   → 玻璃基板封装可能颠覆现有设备投资\n\n5. **中国大陆封装厂扩产不及预期**"
     },
     {
-      "id": "e5f6a8b9c0d60015",
-      "type": "group",
-      "x": -100,
-      "y": 990,
-      "width": 1820,
-      "height": 420,
+      "id": "0000000000000028",
+      "type": "text",
+      "x": 1700,
+      "y": 1410,
+      "width": 440,
+      "height": 280,
       "color": "3",
-      "label": "⚠️ 第五部分：五大技术挑战"
+      "text": "## 📊 投资时钟\n\n**当前阶段（2025-2027）：** 黄金投资期\n\n| 阶段 | 特征 | 受益 |\n|------|------|------|\n| 早期 | AI芯片爆发→产能扩张 | KLIC/ASMI（设备先行）|\n| 中期 | 产能落地→稼动率提升 | KLA/DISCO |\n| 后期 | 竞争加剧→成本控制 | 国产替代（NAURA/ACM）|\n| 成熟期 | 技术升级→HBM4/玻璃基板 | 新路线设备商 |\n\n**关键结论：** 设备订单增速 > 封装厂营收增速"
     },
     {
-      "id": "e5f6a8b9c0d60016",
+      "id": "0000000000000029",
       "type": "text",
-      "x": 0,
-      "y": 1030,
-      "width": 340,
-      "height": 200,
-      "color": "1",
-      "text": "## 1. 良率危机\n\n16层堆叠最终良率：\n```\nGPU  95%\n× HBM 85%\n× Bond 90%\n─────────\n= 72.7%\n```\n\n**突破方向：**\n- 冗余修复机制\n- 分区键合屏蔽\n- Chiplet故障隔离"
+      "x": 380,
+      "y": -250,
+      "width": 400,
+      "height": 120,
+      "text": "## 产业链价值流动\n\n```\nHBM需求爆发\n    ↓\n台积电 CoWoS/SoIC 扩产\n    ↓\nSK海力士 HBM 扩产\n    ↓\n  设备订单爆发\n    ↓\nKLIC / ASMI / AMAT\n   订单高增长\n    ↓\n  国产替代加速\n    ↓\nNAURA / ACM / AMEC\n   订单增长\n```"
     },
     {
-      "id": "e5f6a8b9c0d60017",
+      "id": "0000000000000030",
       "type": "text",
-      "x": 360,
-      "y": 1030,
-      "width": 340,
-      "height": 200,
-      "color": "2",
-      "text": "## 2. 热管理困境\n\n| 热源 | 功耗密度 |\n|------|---------|\n| GPU底层 | 0.8-1.0 W/mm² |\n| 局部热点 | **>1.5 W/mm²** ⚠️ |\n| 风冷极限 | ~0.5 W/mm² |\n\n**突破方向：**\n- 背面冷却技术\n- 微流道液冷\n- 金刚石填充TIM"
-    },
-    {
-      "id": "e5f6a8b9c0d60018",
-      "type": "text",
-      "x": 720,
-      "y": 1030,
-      "width": 340,
-      "height": 200,
-      "color": "3",
-      "text": "## 3. 功耗密度\n\nAI加速器能耗分布：\n```\n[计算]  ████████░░  40%\n[数据搬运] ██████████████  60%\n```\n\n**突破方向：**\n- 背面供电网络 BSPDN\n- 存内计算 CiM\n- 近内存计算优化"
-    },
-    {
-      "id": "e5f6a8b9c0d60019",
-      "type": "text",
-      "x": 1080,
-      "y": 1030,
-      "width": 300,
-      "height": 200,
-      "color": "4",
-      "text": "## 4. TSV/HB精度\n\n**Hybrid Bonding挑战：**\n- 对准精度 <300nm\n- 表面平坦度极度严格\n- 需华海清科等国产突破\n\n**TSV密度不足：**\n- 深宽比 >50:1 刻蚀\n- 中微公司已在研"
-    },
-    {
-      "id": "e5f6a8b9c0d60020",
-      "type": "text",
-      "x": 1400,
-      "y": 1030,
-      "width": 300,
-      "height": 200,
-      "color": "5",
-      "text": "## 5. 测试复杂性\n\n**测试体系：**\n- KGD (Known Good Die)\n- Burn-in / CP / FT\n- TCT热循环 (-55°C~125°C)\n- HAST高加速测试\n- DPA破坏性分析\n\n**战略突破口：**\n华海清科Hybrid Bonder设备是**最关键卡脖子环节**"
-    },
-    {
-      "id": "f6a9b0c1d2e60021",
-      "type": "group",
-      "x": 1940,
-      "y": -300,
-      "width": 700,
-      "height": 1710,
-      "color": "2",
-      "label": "🗺️ 知识图谱连线"
-    },
-    {
-      "id": "f6a9b0c1d2e60022",
-      "type": "text",
-      "x": 1960,
-      "y": -260,
-      "width": 660,
-      "height": 1640,
-      "color": "1",
-      "text": "## 产业链全景图\n\n```\n        ┌────────────────────────────────────────────┐\n        │  📊 市场需求                                 │\n        │  AI算力 → 内存墙 → HBM需求爆发              │\n        └────────────────────────┬───────────────────┘\n                                 ↓\n        ┌────────────────────────────────────────────┐\n        │  🏭 芯片制造                                │\n        │  三星/SK海力士/美光 → HBM生产              │\n        │  长鑫/长江存储 → 国产存储突破                │\n        └────────────────────────┬───────────────────┘\n                                 ↓\n        ┌────────────────────────────────────────────┐\n        │  📦 先进封装                                │\n        │  2.5D → 3D → Hybrid Bonding               │\n        │  台积电CoWoS / 英特尔Foveros               │\n        └────────────────────────┬───────────────────┘\n                                 ↓\n        ┌────────────────────────────────────────────┐\n        │  🔧 设备材料                                │\n        │  沉积/刻蚀 → CMP → 键合 → 检测             │\n        │  AMAT/Lam/TEL/Disco → 国产替代            │\n        └────────────────────────────────────────────┘\n```\n\n**国产化率：** 封装设备 ~30% | 材料 ~40% | 检测 **仅16.4%** ⚠️"
+      "x": 380,
+      "y": -20,
+      "width": 400,
+      "height": 240,
+      "text": "## 技术路线演进时间轴\n\n```\n2022  HBM3  3D堆叠成熟\n      ├─ TSMC CoWoS-S 量产\n      └─ SK海力士 HBM3 量产\n\n2024  HBM3E 混合键合成为主流\n      ├─ KLIC LITEX-8950量产\n      └─ ASMI 下一代TCB验证\n\n2025  HBM4  键合精度±0.5μm\n      ├─ 混合键合需求爆发\n      └─ 玻璃基板开始导入\n\n2027  HBM4e+  16层堆叠\n      └─ 3nm TSV + 混合键合\n```"
     }
   ],
   "edges": [
     {
-      "id": "edge001",
-      "fromNode": "a1b2c3d4e5f60002",
-      "fromSide": "right",
-      "toNode": "b2c3d4e5f5a60006",
-      "toSide": "left",
-      "label": "带宽需求→键合演进",
-      "color": "6"
-    },
-    {
-      "id": "edge002",
-      "fromNode": "a1b2c3d4e5f60002",
+      "id": "e00000000000001",
+      "fromNode": "0000000000000001",
       "fromSide": "bottom",
-      "toNode": "c3d4e5f6a6b60009",
+      "toNode": "0000000000000029",
       "toSide": "top",
-      "label": "内存墙→HBM爆发",
-      "color": "5"
+      "toEnd": "arrow",
+      "label": "需求传导"
     },
     {
-      "id": "edge003",
-      "fromNode": "b2c3d4e5f5a60006",
+      "id": "e00000000000002",
+      "fromNode": "0000000000000029",
       "fromSide": "bottom",
-      "toNode": "d4e5f6a7b8c60014",
+      "toNode": "0000000000000030",
       "toSide": "top",
-      "label": "HB→设备需求",
-      "color": "4"
+      "toEnd": "arrow",
+      "label": "时间演进"
     },
     {
-      "id": "edge004",
-      "fromNode": "c3d4e5f6a6b60009",
+      "id": "e00000000000003",
+      "fromNode": "0000000000000011",
+      "fromSide": "left",
+      "toNode": "0000000000000003",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "AMAT设备"
+    },
+    {
+      "id": "e00000000000004",
+      "fromNode": "0000000000000011",
+      "fromSide": "left",
+      "toNode": "0000000000000007",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "TEL设备"
+    },
+    {
+      "id": "e00000000000005",
+      "fromNode": "0000000000000012",
+      "fromSide": "left",
+      "toNode": "0000000000000006",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "KLIC键合"
+    },
+    {
+      "id": "e00000000000006",
+      "fromNode": "0000000000000012",
+      "fromSide": "left",
+      "toNode": "0000000000000004",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "LRCX TSV"
+    },
+    {
+      "id": "e00000000000007",
+      "fromNode": "0000000000000013",
+      "fromSide": "left",
+      "toNode": "0000000000000009",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "ASMI Fan-out"
+    },
+    {
+      "id": "e00000000000008",
+      "fromNode": "0000000000000013",
+      "fromSide": "left",
+      "toNode": "0000000000000008",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "DISCO切割"
+    },
+    {
+      "id": "e00000000000009",
+      "fromNode": "0000000000000016",
+      "fromSide": "left",
+      "toNode": "0000000000000005",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "KLA检测"
+    },
+    {
+      "id": "e00000000000010",
+      "fromNode": "0000000000000016",
+      "fromSide": "left",
+      "toNode": "0000000000000008",
+      "toSide": "right",
+      "toEnd": "arrow",
+      "label": "DISCO切割"
+    },
+    {
+      "id": "e00000000000011",
+      "fromNode": "0000000000000011",
       "fromSide": "right",
-      "toNode": "c3d4e5f6a6b60011",
+      "toNode": "0000000000000018",
       "toSide": "left",
-      "label": "→厂商路线"
+      "toEnd": "arrow",
+      "label": "国产替代"
     },
     {
-      "id": "edge005",
-      "fromNode": "c3d4e5f6a6b60010",
+      "id": "e00000000000012",
+      "fromNode": "0000000000000011",
       "fromSide": "right",
-      "toNode": "b2c3d4e5f5a60006",
+      "toNode": "0000000000000019",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "AMEC TSV"
+    },
+    {
+      "id": "e00000000000013",
+      "fromNode": "0000000000000012",
+      "fromSide": "right",
+      "toNode": "0000000000000020",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "HTEC CMP"
+    },
+    {
+      "id": "e00000000000014",
+      "fromNode": "0000000000000016",
+      "fromSide": "right",
+      "toNode": "0000000000000021",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "ACM清洗"
+    },
+    {
+      "id": "e00000000000015",
+      "fromNode": "0000000000000025",
+      "fromSide": "top",
+      "toNode": "0000000000000001",
       "toSide": "bottom",
-      "label": "3D化→HB导入",
-      "color": "6"
-    },
-    {
-      "id": "edge006",
-      "fromNode": "d4e5f6a7b8c60013",
-      "fromSide": "bottom",
-      "toNode": "e5f6a8b9c0d60020",
-      "toSide": "top",
-      "label": "材料→测试需求"
-    },
-    {
-      "id": "edge007",
-      "fromNode": "d4e5f6a7b8c60014",
-      "fromSide": "bottom",
-      "toNode": "e5f6a8b9c0d60019",
-      "toSide": "top",
-      "label": "设备→TSV/HB挑战"
-    },
-    {
-      "id": "edge008",
-      "fromNode": "e5f6a8b9c0d60016",
-      "fromSide": "right",
-      "toNode": "e5f6a8b9c0d60017",
-      "toSide": "left",
-      "label": "良率→热管理"
-    },
-    {
-      "id": "edge009",
-      "fromNode": "e5f6a8b9c0d60017",
-      "fromSide": "right",
-      "toNode": "e5f6a8b9c0d60018",
-      "toSide": "left",
-      "label": "热管理→功耗"
-    },
-    {
-      "id": "edge010",
-      "fromNode": "a1b2c3d4e5f60004",
-      "fromSide": "bottom",
-      "toNode": "c3d4e5f6a6b60010",
-      "toSide": "top",
-      "label": "封装类型→3D阶段",
-      "color": "3"
+      "toEnd": "arrow",
+      "label": "投资方向"
     }
   ]
 }
