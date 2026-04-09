@@ -1,0 +1,240 @@
+{
+  "name": "Advanced Packaging Knowledge Base",
+  "version": "1.0.0",
+  "description": "半导体先进封装知识库节点过滤器配置 - 用于在Obsidian库中管理和筛选相关节点",
+  "appliesTo": [
+    "**/Advanced-Packaging*.md",
+    "**/semiconductor*/**/*.md",
+    "**/HBM*.md",
+    "**/chiplet*.md",
+    "**/TSV*.md",
+    "**/bonding*.md",
+    "**/封装*.md"
+  ],
+  "fields": [
+    {
+      "key": "category",
+      "label": "分类",
+      "type": "text",
+      "description": "知识类别",
+      "values": [
+        "概念与驱动因素",
+        "封装类型与技术",
+        "HBM与存储封装",
+        "材料与设备",
+        "市场与产业链",
+        "技术挑战"
+      ]
+    },
+    {
+      "key": "status",
+      "label": "状态",
+      "type": "select",
+      "values": [
+        "active",
+        "review",
+        "draft",
+        "archived"
+      ]
+    },
+    {
+      "key": "maturity",
+      "label": "成熟度",
+      "type": "select",
+      "values": [
+        "概念",
+        "研发",
+        "小批量",
+        "量产",
+        "成熟"
+      ]
+    },
+    {
+      "key": "supply_chain_role",
+      "label": "供应链角色",
+      "type": "text",
+      "description": "在半导体供应链中的位置"
+    },
+    {
+      "key": "technology_type",
+      "label": "技术类型",
+      "type": "text",
+      "values": [
+        "键合技术",
+        "封装结构",
+        "材料",
+        "设备",
+        "EDA/设计",
+        "测试"
+      ]
+    },
+    {
+      "key": "region",
+      "label": "地区",
+      "type": "select",
+      "values": [
+        "全球",
+        "中国大陆",
+        "中国台湾",
+        "韩国",
+        "日本",
+        "美国",
+        "欧洲"
+      ]
+    },
+    {
+      "key": "priority",
+      "label": "优先级",
+      "type": "select",
+      "values": [
+        "关键",
+        "高",
+        "中",
+        "低"
+      ]
+    },
+    {
+      "key": "china_replacement",
+      "label": "国产替代",
+      "type": "boolean",
+      "description": "是否存在国产替代方案"
+    },
+    {
+      "key": "related_companies",
+      "label": "相关企业",
+      "type": "text",
+      "isList": true,
+      "description": "相关公司列表"
+    }
+  ],
+  "savedFilters": [
+    {
+      "name": "🔬 先进封装核心技术",
+      "query": "technology_type:键合技术 OR technology_type:封装结构",
+      "description": "筛选所有先进封装核心工艺技术相关笔记"
+    },
+    {
+      "name": "🇨🇳 国产替代相关",
+      "query": "china_replacement:true",
+      "description": "筛选所有有国产替代方案的技术节点"
+    },
+    {
+      "name": "📊 存储封装专题",
+      "query": "category:HBM与存储封装",
+      "description": "筛选所有HBM和存储封装相关笔记"
+    },
+    {
+      "name": "🏭 设备材料",
+      "query": "technology_type:设备 OR technology_type:材料",
+      "description": "筛选所有设备和材料相关笔记"
+    },
+    {
+      "name": "⚠️ 关键供应链节点",
+      "query": "priority:关键 AND supply_chain_role:*",
+      "description": "筛选所有被标记为关键优先级的供应链节点"
+    },
+    {
+      "name": "🌏 亚洲动态",
+      "query": "region:中国大陆 OR region:中国台湾 OR region:韩国 OR region:日本",
+      "description": "筛选亚太地区半导体动态"
+    },
+    {
+      "name": "🔗 待补充节点",
+      "query": "status:draft",
+      "description": "标记为草稿状态，需要补充的笔记"
+    }
+  ],
+  "views": [
+    {
+      "name": "📋 先进封装知识总览",
+      "type": "table",
+      "columns": ["title", "category", "technology_type", "maturity", "priority", "china_replacement"],
+      "sort": "priority",
+      "sortDirection": "desc",
+      "groupBy": "category"
+    },
+    {
+      "name": "🗺️ 供应链节点地图",
+      "type": "kanban",
+      "groupBy": "supply_chain_role",
+      "sortBy": "priority"
+    },
+    {
+      "name": "🇨🇳 国产替代进度",
+      "type": "table",
+      "columns": ["title", "technology_type", "maturity", "related_companies"],
+      "filter": "china_replacement:true",
+      "groupBy": "technology_type"
+    },
+    {
+      "name": "💰 市场与技术成熟度矩阵",
+      "type": "scatter",
+      "xAxis": "maturity",
+      "yAxis": "priority",
+      "colorBy": "category"
+    }
+  ],
+  "autoTagRules": [
+    {
+      "conditions": [
+        { "field": "category", "equals": "技术挑战" }
+      ],
+      "actions": [
+        { "type": "addTag", "tag": "#技术挑战" },
+        { "type": "addTag", "tag": "#待解决" }
+      ]
+    },
+    {
+      "conditions": [
+        { "field": "china_replacement", "equals": true }
+      ],
+      "actions": [
+        { "type": "addTag", "tag": "#国产替代" }
+      ]
+    },
+    {
+      "conditions": [
+        { "field": "priority", "equals": "关键" }
+      ],
+      "actions": [
+        { "type": "addTag", "tag": "#关键节点" }
+      ]
+    },
+    {
+      "conditions": [
+        { "field": "maturity", "equals": "概念" }
+      ],
+      "actions": [
+        { "type": "addTag", "tag": "#概念阶段" }
+      ]
+    },
+    {
+      "conditions": [
+        { "field": "maturity", "equals": "量产" },
+        { "field": "maturity", "equals": "成熟" }
+      ],
+      "actions": [
+        { "type": "addTag", "tag": "#已验证" }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2026-04-09",
+    "mainNote": "Advanced-Packaging-Knowledge-Base.md",
+    "canvasFile": "Advanced-Packaging-Canvas.canvas",
+    "sourceFiles": [
+      "D:/raw date/js/Advanced-Packaging-Fundamentals-ebook-2025.pdf",
+      "D:/raw date/js/2026年中国半导体先进封装行业研究报告【行行查-hanghangcha.com】.pdf",
+      "C:/Users/Yujie Tang/Desktop/存储/【国盛郑震湘团队】存储产业升级：重视HBM、3D DRAM、定制化存储机遇.pdf",
+      "C:/Users/Yujie Tang/Desktop/存储/中泰证券-电子行业：4F2+CBA是国产DRAM大趋势-251130.pdf",
+      "C:/Users/Yujie Tang/Desktop/存储/国泰海通证券-产业专题：电子封装与键合技术，制程产业的最后一步-251119.pdf",
+      "C:/Users/Yujie Tang/Desktop/存储/精测电子20251029.pdf",
+      "C:/Users/Yujie Tang/Desktop/存储/中科飞测20251113.pdf",
+      "D:/peter/workspace/资料库/semiconductor_supplier_map.md",
+      "D:/peter/workspace/资料库/semiconductor_supply_chain.md"
+    ],
+    "author": "AI Assistant",
+    "version": "1.0",
+    "notes": "本过滤器配置与 Obsidian41-Dataview 或类似插件配合使用效果最佳"
+  }
+}

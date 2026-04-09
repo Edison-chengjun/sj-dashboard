@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "pdf-processing": {
+      "version": "1.0.0",
+      "installedAt": 1775743147195
+    },
+    "pdf-to-image-preview": {
+      "version": "0.1.0",
+      "installedAt": 1775743158659
+    }
+  }
+}
