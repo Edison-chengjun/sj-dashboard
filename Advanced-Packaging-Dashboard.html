@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Packaging | 先进封装技术全景</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'ap-dark': '#0a0a0f',
+        'ap-surface': '#13131a',
+        'ap-border': '#1e1e2e',
+        'ap-cyan': '#00d4ff',
+        'ap-purple': '#a855f7',
+        'ap-green': '#22d3a5',
+        'ap-orange': '#ff6b35',
+        'ap-pink': '#ff2d78',
+        'ap-yellow': '#ffd60a',
+      }
+    }
+  }
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 #0a0a0f;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 3px; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #0a0a0f;
+  color: #e2e8f0;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── Glow Orbs ── */
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  transition: transform 0.3s ease;
+}
+.glow-orb.cyan { background: radial-gradient(circle, #00d4ff 0%, transparent 70%); }
+.glow-orb.purple { background: radial-gradient(circle, #a855f7 0%, transparent 70%); }
+.glow-orb.green { background: radial-gradient(circle, #22d3a5 0%, transparent 70%); }
+
+/* ── Bento Grid ── */
+.bento-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.bento-item { position: relative; overflow: hidden; }
+
+/* ── Glassmorphism ── */
+.glass {
+  background: rgba(19, 19, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Gradient Borders ── */
+.grad-border-cyan {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.grad-border-cyan::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #00d4ff 0%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.grad-border-purple {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.grad-border-purple::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #a855f7 0%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* ── Highlight Pills ── */
+.pill-cyan { background: rgba(0,212,255,0.12); color: #00d4ff; border: 1px solid rgba(0,212,255,0.3); }
+.pill-purple { background: rgba(168,85,247,0.12); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+.pill-green { background: rgba(34,211,165,0.12); color: #22d3a5; border: 1px solid rgba(34,211,165,0.3); }
+.pill-orange { background: rgba(255,107,53,0.12); color: #ff6b35; border: 1px solid rgba(255,107,53,0.3); }
+.pill-pink { background: rgba(255,45,120,0.12); color: #ff2d78; border: 1px solid rgba(255,45,120,0.3); }
+
+/* ── Typography ── */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #00d4ff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-green {
+  background: linear-gradient(135deg, #22d3a5, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Outline SVG Icons ── */
+.outline-icon { opacity: 0.7; }
+
+/* ── Number Counter Animation ── */
+.counter { font-variant-numeric: tabular-nums; }
+
+/* ── Apple-style Scroll Animations ── */
+.reveal { opacity: 0; transform: translateY(40px); }
+.reveal.active { opacity: 1; transform: translateY(0); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal-left { opacity: 0; transform: translateX(-60px); }
+.reveal-left.active { opacity: 1; transform: translateX(0); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal-right { opacity: 0; transform: translateX(60px); }
+.reveal-right.active { opacity: 1; transform: translateX(0); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal-scale { opacity: 0; transform: scale(0.85); }
+.reveal-scale.active { opacity: 1; transform: scale(1); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* ── Parallax Mouse Tracker ── */
+.parallax-layer { will-change: transform; transition: transform 0.1s linear; }
+
+/* ── Animated Gradient Background ── */
+@keyframes gradientShift {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animated-bg {
+  background: linear-gradient(-45deg, #0a0a0f, #0d1117, #0a0a1a, #0f0f23);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* ── Timeline Dot Pulse ── */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(0,212,255,0); }
+}
+
+/* ── Hero Section ── */
+.hero-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+}
+
+/* ── Big Number ── */
+.big-num {
+  font-size: clamp(4rem, 10vw, 9rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Stagger Delays ── */
+.delay-100 { transition-delay: 100ms !important; }
+.delay-200 { transition-delay: 200ms !important; }
+.delay-300 { transition-delay: 300ms !important; }
+.delay-400 { transition-delay: 400ms !important; }
+.delay-500 { transition-delay: 500ms !important; }
+
+/* ── Chart Container ── */
+.chart-container { position: relative; width: 100%; }
+
+/* ── Section Dividers ── */
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ── Bento Card Hover ── */
+.bento-card {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+  cursor: default;
+}
+.bento-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.bento-card:hover::after { opacity: 1; }
+
+/* ── Navigation ── */
+.nav-link {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+.nav-link:hover { color: #00d4ff; }
+.nav-link.active { color: #00d4ff; }
+
+/* ── Cursor Glow Effect ── */
+#cursor-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,85,247,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+/* ── Progress Bar ── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00d4ff, #a855f7);
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+/* ── Bonding Tech Cards ── */
+.bonding-card {
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(19,19,26,0.5);
+  transition: all 0.4s ease;
+}
+.bonding-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  background: rgba(0,212,255,0.04);
+  transform: translateY(-2px);
+}
+
+/* ── Ping Animation ── */
+@keyframes ping-slow {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+.animate-ping-slow { animation: ping-slow 3s ease-in-out infinite; }
+
+/* ── Grid Lines Background ── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── Section Title Decoration ── */
+.section-title-wrap::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #00d4ff, #a855f7);
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+/* ── Tech Spec Table ── */
+.spec-table { border-collapse: separate; border-spacing: 0 8px; }
+.spec-table tr td {
+  padding: 12px 16px;
+  background: rgba(19,19,26,0.6);
+  font-size: 13px;
+}
+.spec-table tr td:first-child { border-radius: 8px 0 0 8px; }
+.spec-table tr td:last-child { border-radius: 0 8px 8px 0; }
+</style>
+</head>
+<body class="animated-bg">
+
+<!-- Scroll Progress -->
+<div id="scroll-progress" style="width:0%"></div>
+
+<!-- Cursor Glow -->
+<div id="cursor-glow"></div>
+
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 glass" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-ap-cyan to-ap-purple flex items-center justify-center">
+        <i class="fa-solid fa-microchip text-xs text-white"></i>
+      </div>
+      <span class="text-sm font-semibold tracking-tight">Advanced Packaging</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+      <span class="nav-link active" onclick="scrollToSection('hero')">Overview</span>
+      <span class="nav-link" onclick="scrollToSection('market')">Market</span>
+      <span class="nav-link" onclick="scrollToSection('bonding')">Bonding</span>
+      <span class="nav-link" onclick="scrollToSection('hbm')">HBM</span>
+      <span class="nav-link" onclick="scrollToSection('supply')">Supply Chain</span>
+      <span class="nav-link" onclick="scrollToSection('challenge')">Challenges</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pill-purple text-xs px-3 py-1 rounded-full">2026</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO SECTION ── -->
+<section id="hero" class="relative min-h-screen flex flex-col justify-center pt-20 pb-12 px-6 overflow-hidden grid-bg">
+  <!-- Grid BG decorative lines -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <svg class="absolute top-0 right-0 w-1/2 h-full opacity-[0.03]" viewBox="0 0 600 900" fill="none">
+      <path d="M600 0 L0 900 M0 0 L600 900 M300 0 L0 900 M300 0 L600 900" stroke="#00d4ff" stroke-width="0.5"/>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <!-- Eyebrow -->
+    <div class="reveal mb-6 flex items-center gap-3">
+      <span class="section-label">Semiconductor Engineering · 行行查</span>
+      <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent"></div>
+      <span class="text-xs text-white/30">Data: 2026</span>
+    </div>
+
+    <!-- Main Title -->
+    <div class="reveal delay-100 mb-4">
+      <h1 class="hero-title text-white">
+        <span class="text-gradient-cyan">Advanced</span><br>
+        <span class="text-white">Packaging</span>
+      </h1>
+      <p class="text-lg font-medium text-white/50 mt-2 tracking-wide">先进封装技术全景图谱</p>
+    </div>
+
+    <!-- Bento Stats Row -->
+    <div class="bento-grid mt-8">
+      <!-- Stat 1 -->
+      <div class="bento-item bento-card glass rounded-2xl p-6 col-span-4 reveal delay-200" style="--mx:30%;--my:50%">
+        <div class="text-xs text-white/30 mb-2 tracking-widest uppercase">Global Market 2024</div>
+        <div class="big-num text-ap-cyan counter" data-target="400">$0</div>
+        <div class="text-sm text-white/40 mt-1">亿美元 <span class="text-ap-cyan text-xs">USD Billions</span></div>
+        <div class="mt-4 flex items-center gap-2">
+          <div class="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+            <div class="h-full bg-ap-cyan rounded-full transition-all duration-1000" style="width:0%"></div>
+          </div>
+          <span class="text-xs text-white/30">57%</span>
+        </div>
+      </div>
+
+      <!-- Stat 2 -->
+      <div class="bento-item bento-card glass rounded-2xl p-6 col-span-4 reveal delay-300" style="--mx:70%;--my:50%">
+        <div class="text-xs text-white/30 mb-2 tracking-widest uppercase">Market CAGR</div>
+        <div class="big-num text-ap-purple counter" data-target="33">0</div>
+        <div class="text-sm text-white/40 mt-1">% <span class="text-ap-purple text-xs">Compound Annual Growth</span></div>
+        <div class="mt-4 flex gap-1.5">
+          <span class="pill-purple text-xs px-2 py-0.5 rounded-full">2024→2030</span>
+        </div>
+      </div>
+
+      <!-- Stat 3 -->
+      <div class="bento-item bento-card glass rounded-2xl p-6 col-span-4 reveal delay-400" style="--mx:50%;--my:30%">
+        <div class="text-xs text-white/30 mb-2 tracking-widest uppercase">Global Market 2030</div>
+        <div class="big-num text-ap-green counter" data-target="980">$0</div>
+        <div class="text-sm text-white/40 mt-1">亿美元 <span class="text-ap-green text-xs">USD Billions</span></div>
+        <div class="mt-4 flex items-center gap-2">
+          <div class="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+            <div class="h-full bg-ap-green rounded-full" style="width:100%"></div>
+          </div>
+          <span class="text-xs text-white/30">Peak</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub Stats Row -->
+    <div class="bento-grid mt-4">
+      <div class="bento-item glass rounded-2xl p-5 col-span-3 bento-card reveal delay-300" style="--mx:50%;--my:50%">
+        <div class="text-xs text-white/30 mb-3">HBM Bandwidth</div>
+        <div class="text-3xl font-black text-white">1.2<span class="text-ap-cyan text-sm font-normal ml-1">TB/s</span></div>
+        <div class="text-xs text-white/30 mt-1">HBM3E · AI Chip Requirement 4-10 TB/s</div>
+      </div>
+      <div class="bento-item glass rounded-2xl p-5 col-span-3 bento-card reveal delay-400" style="--mx:50%;--my:50%">
+        <div class="text-xs text-white/30 mb-3">Chip Power Distribution</div>
+        <div class="flex items-end gap-2">
+          <div class="text-3xl font-black text-ap-orange">60</div>
+          <div class="text-xs text-white/30 mb-1">% data movement</div>
+        </div>
+        <div class="text-xs text-white/30 mt-1">Only 40% for actual computation</div>
+      </div>
+      <div class="bento-item glass rounded-2xl p-5 col-span-3 bento-card reveal delay-500" style="--mx:50%;--my:50%">
+        <div class="text-xs text-white/30 mb-3">Hybrid Bonding Pitch</div>
+        <div class="text-3xl font-black text-white">0.4<span class="text-ap-pink text-sm font-normal ml-1">μm</span></div>
+        <div class="text-xs text-white/30 mt-1">vs Microbump 10-50μm</div>
+      </div>
+      <div class="bento-item glass rounded-2xl p-5 col-span-3 bento-card reveal delay-500" style="--mx:50%;--my:50%">
+        <div class="text-xs text-white/30 mb-3">China Advanced Packaging</div>
+        <div class="text-3xl font-black text-white">¥513<span class="text-ap-yellow text-sm font-normal ml-1">亿</span></div>
+        <div class="text-xs text-white/30 mt-1">2024 → ¥1000亿 (2029)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+    <span class="text-xs tracking-widest uppercase">Scroll</span>
+    <div class="w-px h-8 bg-gradient-to-b from-white/50 to-transparent"></div>
+  </div>
+</section>
+
+<!-- ── MARKET SECTION ── -->
+<section id="market" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-title-wrap reveal mb-12">
+      <h2 class="text-3xl font-black text-white">Market Size<br><span class="text-gradient-cyan text-2xl">市场规模与预测</span></h2>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Chart: Global Market -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-8 reveal">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-lg font-semibold text-white">Global Advanced Packaging Market</h3>
+            <p class="text-xs text-white/40 mt-1">单位：亿美元 USD Billions · Source: Yole</p>
+          </div>
+          <span class="pill-cyan text-xs px-3 py-1 rounded-full">2019-2029E</span>
+        </div>
+        <div class="chart-container" style="height:280px">
+          <canvas id="marketChart"></canvas>
+        </div>
+      </div>
+
+      <!-- China Market Stats -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-4 flex flex-col justify-between reveal delay-200">
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">China Market<br><span class="text-xs text-white/40 font-normal">中国市场 · 亿人民币</span></h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-xl bg-white/3">
+              <span class="text-xs text-white/50">2024</span>
+              <span class="text-xl font-bold text-white">¥513</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-white/3">
+              <span class="text-xs text-white/50">2025</span>
+              <span class="text-xl font-bold text-ap-cyan">¥600</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-white/3">
+              <span class="text-xs text-white/50">2027</span>
+              <span class="text-xl font-bold text-ap-purple">¥850</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-ap-green/10 to-ap-cyan/10 border border-ap-green/20">
+              <span class="text-xs text-white/50">2029</span>
+              <span class="text-xl font-bold text-ap-green">¥1000+</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 p-3 rounded-xl bg-ap-orange/10 border border-ap-orange/20">
+          <p class="text-xs text-ap-orange">⚠️ Advanced Packaging drives 2026+ semiconductor growth</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BONDING TECHNOLOGY SECTION ── -->
+<section id="bonding" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-title-wrap reveal mb-12">
+      <h2 class="text-3xl font-black text-white">Bonding Evolution<br><span class="text-gradient-cyan text-2xl">键合技术演进路线</span></h2>
+    </div>
+
+    <!-- Timeline -->
+    <div class="relative reveal">
+      <!-- Timeline line -->
+      <div class="absolute top-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+      <div class="grid grid-cols-5 gap-4 relative">
+        <!-- WB -->
+        <div class="bonding-card rounded-2xl p-5 text-center relative" style="background:rgba(255,255,255,0.03)">
+          <div class="w-3 h-3 rounded-full bg-white/30 mx-auto mb-4" style="margin-top:-20px"></div>
+          <div class="text-xs text-white/30 mb-2">Pitch</div>
+          <div class="text-xl font-black text-white mb-1">50-100</div>
+          <div class="text-xs text-white/40 mb-3">μm</div>
+          <div class="text-sm font-bold text-white/60 mb-1">Wire Bond</div>
+          <div class="text-xs text-white/30">引线键合</div>
+          <div class="mt-3 pill-cyan text-xs px-2 py-0.5 rounded-full inline-block opacity-50">传统</div>
+        </div>
+        <!-- C4 -->
+        <div class="bonding-card rounded-2xl p-5 text-center relative" style="background:rgba(255,255,255,0.03)">
+          <div class="w-3 h-3 rounded-full bg-white/30 mx-auto mb-4" style="margin-top:-20px"></div>
+          <div class="text-xs text-white/30 mb-2">Pitch</div>
+          <div class="text-xl font-black text-white mb-1">300-500</div>
+          <div class="text-xs text-white/40 mb-3">μm</div>
+          <div class="text-sm font-bold text-white/60 mb-1">C4 Bump</div>
+          <div class="text-xs text-white/30">倒装芯片</div>
+          <div class="mt-3 pill-cyan text-xs px-2 py-0.5 rounded-full inline-block opacity-50">成熟</div>
+        </div>
+        <!-- TCB -->
+        <div class="bonding-card rounded-2xl p-5 text-center relative" style="background:rgba(255,255,255,0.03)">
+          <div class="w-3 h-3 rounded-full bg-ap-purple/50 mx-auto mb-4 animate-ping-slow" style="margin-top:-20px;background:#a855f7"></div>
+          <div class="text-xs text-white/30 mb-2">Pitch</div>
+          <div class="text-xl font-black text-white mb-1">50-150</div>
+          <div class="text-xs text-white/40 mb-3">μm</div>
+          <div class="text-sm font-bold text-white/60 mb-1">TCB Pillars</div>
+          <div class="text-xs text-white/30">热压键合</div>
+          <div class="mt-3 pill-purple text-xs px-2 py-0.5 rounded-full inline-block">高端</div>
+        </div>
+        <!-- Pillar -->
+        <div class="bonding-card rounded-2xl p-5 text-center relative" style="background:rgba(255,255,255,0.03)">
+          <div class="w-3 h-3 rounded-full bg-white/30 mx-auto mb-4" style="margin-top:-20px"></div>
+          <div class="text-xs text-white/30 mb-2">Pitch</div>
+          <div class="text-xl font-black text-white mb-1">10-50</div>
+          <div class="text-xs text-white/40 mb-3">μm</div>
+          <div class="text-sm font-bold text-white/60 mb-1">Copper Pillar</div>
+          <div class="text-xs text-white/30">铜柱</div>
+          <div class="mt-3 pill-green text-xs px-2 py-0.5 rounded-full inline-block">先进</div>
+        </div>
+        <!-- Hybrid -->
+        <div class="bonding-card rounded-2xl p-5 text-center relative border border-ap-cyan/30" style="background:rgba(0,212,255,0.04)">
+          <div class="w-3 h-3 rounded-full bg-ap-cyan mx-auto mb-4 animate-ping-slow" style="margin-top:-20px"></div>
+          <div class="text-xs text-ap-cyan mb-2">Pitch</div>
+          <div class="text-2xl font-black text-ap-cyan mb-1">0.4</div>
+          <div class="text-xs text-white/40 mb-3">μm · <span class="text-ap-cyan">100x↓</span></div>
+          <div class="text-sm font-bold text-ap-cyan mb-1">Hybrid Bonding</div>
+          <div class="text-xs text-white/50">混合键合</div>
+          <div class="mt-3 pill-cyan text-xs px-2 py-0.5 rounded-full inline-block">Future</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hybrid Bonding Deep Dive -->
+    <div class="bento-grid mt-8">
+      <div class="bento-item glass rounded-2xl p-6 col-span-6 reveal">
+        <h3 class="text-lg font-bold text-white mb-4">🔬 Hybrid Bonding 原理<br><span class="text-xs text-white/40 font-normal">Hybrid Bonding Principle · Cu-Cu Direct Contact</span></h3>
+        <div class="space-y-3 text-sm text-white/60 leading-relaxed">
+          <p>混合键合将<span class="text-ap-cyan font-semibold">氧化物</span>和<span class="text-ap-purple font-semibold">金属铜</span>同时键合——两块芯片的铜焊盘直接接触，氧化层首先键合，金属随后连接，<span class="text-white font-semibold">无需焊料</span>。</p>
+          <div class="grid grid-cols-3 gap-3 mt-4">
+            <div class="p-3 rounded-xl bg-ap-cyan/5 border border-ap-cyan/20 text-center">
+              <div class="text-2xl font-black text-ap-cyan">30-50%</div>
+              <div class="text-xs text-white/40 mt-1">功耗降低</div>
+            </div>
+            <div class="p-3 rounded-xl bg-ap-purple/5 border border-ap-purple/20 text-center">
+              <div class="text-2xl font-black text-ap-purple">40%</div>
+              <div class="text-xs text-white/40 mt-1">延迟降低</div>
+            </div>
+            <div class="p-3 rounded-xl bg-ap-green/5 border border-ap-green/20 text-center">
+              <div class="text-2xl font-black text-ap-green">>10</div>
+              <div class="text-xs text-white/40 mt-1">TB/s·mm² 带宽密度</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bento-item glass rounded-2xl p-6 col-span-6 reveal delay-200">
+        <h3 class="text-lg font-bold text-white mb-4">📊 Bonding Technology Comparison<br><span class="text-xs text-white/40 font-normal">键合技术参数对比</span></h3>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-xs text-white/30 uppercase tracking-wider">
+              <th class="text-left pb-3">Technology</th>
+              <th class="text-center pb-3">Pitch (μm)</th>
+              <th class="text-center pb-3">Dia (μm)</th>
+              <th class="text-center pb-3">Yield</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            <tr class="border-t border-white/5">
+              <td class="py-2 text-white/60">Wire Bond 引线键合</td>
+              <td class="py-2 text-center text-white/80">50-100</td>
+              <td class="py-2 text-center text-white/80">25-50</td>
+              <td class="py-2 text-center text-ap-green">>95%</td>
+            </tr>
+            <tr class="border-t border-white/5">
+              <td class="py-2 text-white/60">C4 Bump 倒装芯片</td>
+              <td class="py-2 text-center text-white/80">300-500</td>
+              <td class="py-2 text-center text-white/80">250-800</td>
+              <td class="py-2 text-center text-ap-green">>90%</td>
+            </tr>
+            <tr class="border-t border-white/5">
+              <td class="py-2 text-white/60">TCB Pillars 热压键合</td>
+              <td class="py-2 text-center text-white/80">50-150</td>
+              <td class="py-2 text-center text-white/80">50-100</td>
+              <td class="py-2 text-center text-ap-yellow">~85%</td>
+            </tr>
+            <tr class="border-t border-white/5">
+              <td class="py-2 text-white/60">Copper Pillar 铜柱</td>
+              <td class="py-2 text-center text-white/80">10-50</td>
+              <td class="py-2 text-center text-white/80">30</td>
+              <td class="py-2 text-center text-ap-yellow">~80%</td>
+            </tr>
+            <tr class="border-t border-white/5 bg-ap-cyan/5">
+              <td class="py-2 text-ap-cyan font-semibold">Hybrid Bonding 混合键合</td>
+              <td class="py-2 text-center text-ap-cyan font-bold">0.4</td>
+              <td class="py-2 text-center text-ap-cyan">—</td>
+              <td class="py-2 text-center text-ap-orange">~70-80%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bonder Market -->
+    <div class="bento-grid mt-6">
+      <div class="bento-item glass rounded-2xl p-6 col-span-12 reveal">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Bonder Equipment Market Forecast</h3>
+            <p class="text-xs text-white/40 mt-1">键合设备市场规模预测 · 单位：十亿日元 JPY Billions</p>
+          </div>
+          <span class="pill-orange text-xs px-3 py-1 rounded-full">⚡ High Growth</span>
+        </div>
+        <div class="chart-container" style="height:200px">
+          <canvas id="bonderChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HBM TECHNOLOGY SECTION ── -->
+<section id="hbm" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-title-wrap reveal mb-12">
+      <h2 class="text-3xl font-black text-white">HBM & 3D DRAM<br><span class="text-gradient-cyan text-2xl">高带宽内存技术演进</span></h2>
+    </div>
+
+    <!-- HBM Roadmap Bento -->
+    <div class="bento-grid">
+      <!-- HBM Evolution -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-12 reveal">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-bold text-white">HBM Technology Roadmap <span class="text-xs text-white/40 font-normal ml-2">2016-2030</span></h3>
+          <span class="pill-green text-xs px-3 py-1 rounded-full">Yole Group Data</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm min-w-[700px]">
+            <thead>
+              <tr class="text-xs text-white/30 uppercase tracking-wider border-b border-white/5">
+                <th class="text-left pb-3">Generation</th>
+                <th class="text-center pb-3">Bandwidth</th>
+                <th class="text-center pb-3">Capacity</th>
+                <th class="text-center pb-3">Layers</th>
+                <th class="text-center pb-3">Bonding</th>
+                <th class="text-center pb-3">Year</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="border-t border-white/5 opacity-50">
+                <td class="py-2.5 text-white/60">HBM2</td>
+                <td class="py-2.5 text-center text-white/80">256 GB/s</td>
+                <td class="py-2.5 text-center text-white/80">8 GB</td>
+                <td class="py-2.5 text-center text-white/80">8L</td>
+                <td class="py-2.5 text-center text-white/40">Microbump</td>
+                <td class="py-2.5 text-center text-white/40">2016</td>
+              </tr>
+              <tr class="border-t border-white/5 opacity-50">
+                <td class="py-2.5 text-white/60">HBM2E</td>
+                <td class="py-2.5 text-center text-white/80">326 GB/s</td>
+                <td class="py-2.5 text-center text-white/80">16 GB</td>
+                <td class="py-2.5 text-center text-white/80">12L</td>
+                <td class="py-2.5 text-center text-white/40">Microbump</td>
+                <td class="py-2.5 text-center text-white/40">2020</td>
+              </tr>
+              <tr class="border-t border-white/5 opacity-50">
+                <td class="py-2.5 text-white/60">HBM3</td>
+                <td class="py-2.5 text-center text-white/80">819 GB/s</td>
+                <td class="py-2.5 text-center text-white/80">24 GB</td>
+                <td class="py-2.5 text-center text-white/80">16L</td>
+                <td class="py-2.5 text-center text-white/40">Microbump</td>
+                <td class="py-2.5 text-center text-white/40">2022</td>
+              </tr>
+              <tr class="border-t border-white/5 bg-ap-cyan/5">
+                <td class="py-2.5 text-ap-cyan font-semibold">HBM3E <span class="text-xs text-ap-cyan/60">← Current</span></td>
+                <td class="py-2.5 text-center text-ap-cyan font-bold">1.2 TB/s</td>
+                <td class="py-2.5 text-center text-ap-cyan">36 GB</td>
+                <td class="py-2.5 text-center text-ap-cyan">16L</td>
+                <td class="py-2.5 text-center text-ap-cyan/60">Microbump</td>
+                <td class="py-2.5 text-center text-ap-cyan/60">2024</td>
+              </tr>
+              <tr class="border-t border-white/5 bg-ap-purple/5">
+                <td class="py-2.5 text-ap-purple font-semibold">HBM4</td>
+                <td class="py-2.5 text-center text-ap-purple font-bold">~1.5 TB/s</td>
+                <td class="py-2.5 text-center text-ap-purple">64 GB+</td>
+                <td class="py-2.5 text-center text-ap-purple">16-20L</td>
+                <td class="py-2.5 text-center text-ap-purple/60">μBump / W2W</td>
+                <td class="py-2.5 text-center text-ap-purple/60">2026</td>
+              </tr>
+              <tr class="border-t border-white/5 bg-ap-green/5">
+                <td class="py-2.5 text-ap-green font-semibold">HBM4E</td>
+                <td class="py-2.5 text-center text-ap-green font-bold">~2.0 TB/s</td>
+                <td class="py-2.5 text-center text-ap-green">96 GB+</td>
+                <td class="py-2.5 text-center text-ap-green">16-20L</td>
+                <td class="py-2.5 text-center text-ap-green font-semibold">Hybrid Bond</td>
+                <td class="py-2.5 text-center text-ap-green/60">2027</td>
+              </tr>
+              <tr class="border-t border-white/5 bg-ap-orange/5">
+                <td class="py-2.5 text-ap-orange font-semibold">HBM5</td>
+                <td class="py-2.5 text-center text-ap-orange font-bold">&gt;2.5 TB/s</td>
+                <td class="py-2.5 text-center text-ap-orange">128 GB+</td>
+                <td class="py-2.5 text-center text-ap-orange">20L+</td>
+                <td class="py-2.5 text-center text-ap-orange font-semibold">Hybrid Bond</td>
+                <td class="py-2.5 text-center text-ap-orange/60">2028+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three Phases + Vendor Map -->
+    <div class="bento-grid mt-6">
+      <!-- GPU-DRAM 3 Phases -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-8 reveal">
+        <h3 class="text-lg font-bold text-white mb-5">GPU-DRAM Integration: 3 Phases <span class="text-xs text-white/40 font-normal ml-2">2024-2030</span></h3>
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Phase 1 -->
+          <div class="rounded-xl p-4 border border-ap-cyan/20 bg-ap-cyan/3">
+            <div class="text-xs text-ap-cyan font-bold mb-1">Phase 1 · 2024-2026</div>
+            <div class="text-sm font-bold text-white mb-3">2.5D Expansion</div>
+            <div class="space-y-1.5 text-xs text-white/50">
+              <div>· HBM3E + CoWoS-L</div>
+              <div>· B200: 12 HBM/stack</div>
+              <div>· Bandwidth → 8 TB/s</div>
+              <div>· Silicon Interposer</div>
+            </div>
+            <div class="text-xs text-ap-cyan/60 mt-3">Density: ~2 TB/mm²</div>
+          </div>
+          <!-- Phase 2 -->
+          <div class="rounded-xl p-4 border border-ap-purple/20 bg-ap-purple/3">
+            <div class="text-xs text-ap-purple font-bold mb-1">Phase 2 · 2027-2029</div>
+            <div class="text-sm font-bold text-white mb-3">Partial 3D</div>
+            <div class="space-y-1.5 text-xs text-white/50">
+              <div>· GPU + SRAM Stacking</div>
+              <div>· Hybrid Bonding商用</div>
+              <div>· NVIDIA TL-Bond</div>
+              <div>· Intel Foveros</div>
+            </div>
+            <div class="text-xs text-ap-purple/60 mt-3">Density: ~6 TB/mm² <span class="text-ap-purple">3×↑</span></div>
+          </div>
+          <!-- Phase 3 -->
+          <div class="rounded-xl p-4 border border-ap-green/20 bg-ap-green/3">
+            <div class="text-xs text-ap-green font-bold mb-1">Phase 3 · 2030+</div>
+            <div class="text-sm font-bold text-white mb-3">Full 3D</div>
+            <div class="space-y-1.5 text-xs text-white/50">
+              <div>· HBM direct on GPU</div>
+              <div>· Logic + Memory 融合</div>
+              <div>· Compute-in-Memory</div>
+              <div>· Near-memory Computing</div>
+            </div>
+            <div class="text-xs text-ap-green/60 mt-3">Density: >10 TB/mm²</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendor Roadmap -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-4 reveal delay-200">
+        <h3 class="text-lg font-bold text-white mb-4">Global Players Roadmap<br><span class="text-xs text-white/40 font-normal">海外厂商路线图</span></h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-white/3">
+            <div class="w-1.5 h-full min-h-[40px] rounded-full bg-ap-orange flex-shrink-0 mt-0.5"></div>
+            <div>
+              <div class="text-sm font-bold text-white">NVIDIA</div>
+              <div class="text-xs text-white/40">CoWoS+HBM3E · 2026局部3D · 2030全3D</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-white/3">
+            <div class="w-1.5 h-full min-h-[40px] rounded-full bg-ap-pink flex-shrink-0 mt-0.5"></div>
+            <div>
+              <div class="text-sm font-bold text-white">Intel</div>
+              <div class="text-xs text-white/40">Foveros Direct · <span class="text-ap-pink">2027 Full 3D · 最激进</span></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-white/3">
+            <div class="w-1.5 h-full min-h-[40px] rounded-full bg-ap-purple flex-shrink-0 mt-0.5"></div>
+            <div>
+              <div class="text-sm font-bold text-white">AMD</div>
+              <div class="text-xs text-white/40">MI300X 3D V-Cache · 2025-2026</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-white/3">
+            <div class="w-1.5 h-full min-h-[40px] rounded-full bg-ap-cyan flex-shrink-0 mt-0.5"></div>
+            <div>
+              <div class="text-sm font-bold text-white">SK Hynix</div>
+              <div class="text-xs text-white/40">HBM3E MR-MUF · 2026 HBM4 · 2027 HB</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-xl bg-white/3">
+            <div class="w-1.5 h-full min-h-[40px] rounded-full bg-ap-green flex-shrink-0 mt-0.5"></div>
+            <div>
+              <div class="text-sm font-bold text-white">Samsung</div>
+              <div class="text-xs text-white/40">X-Cube · 2025 HBM4 · NCF+HCB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- China Memory -->
+    <div class="bento-grid mt-6">
+      <div class="bento-item glass rounded-2xl p-6 col-span-12 reveal">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="text-lg font-bold text-white">🇨🇳 China Memory: CXMT & YMTC <span class="text-xs text-white/40 font-normal ml-2">国产存储双雄</span></h3>
+          <span class="pill-green text-xs px-3 py-1 rounded-full">Breaking Through</span>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          <!-- CXMT -->
+          <div class="p-5 rounded-xl border border-ap-cyan/15 bg-ap-cyan/3">
+            <div class="text-sm font-bold text-ap-cyan mb-1">长鑫存储 CXMT</div>
+            <div class="text-xs text-white/40 mb-3">China's HBM Core · HBM3E验证中</div>
+            <div class="space-y-2 text-xs text-white/60">
+              <div class="flex items-center gap-2"><i class="fa-solid fa-microchip text-ap-cyan/60 w-4"></i> 横向堆叠简化垂直整合工艺</div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-layer-group text-ap-cyan/60 w-4"></i> CBA分离键合 + 4F²架构</div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-rocket text-ap-cyan/60 w-4"></i> 有望率先实现量产</div>
+            </div>
+          </div>
+          <!-- YMTC -->
+          <div class="p-5 rounded-xl border border-ap-purple/15 bg-ap-purple/3">
+            <div class="text-sm font-bold text-ap-purple mb-1">长江存储 YMTC</div>
+            <div class="text-xs text-white/40 mb-3">Xtacking® Technology · 232L 3D NAND</div>
+            <div class="space-y-2 text-xs text-white/60">
+              <div class="flex items-center gap-2"><i class="fa-solid fa-microchip text-ap-purple/60 w-4"></i> Xtacking®异构堆叠全球领先</div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-layer-group text-ap-purple/60 w-4"></i> 232层量产，2027年迈进</div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-arrow-trend-up text-ap-purple/60 w-4"></i> Xtacking → HBM4预研中</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 p-4 rounded-xl bg-ap-yellow/5 border border-ap-yellow/20">
+          <p class="text-xs text-ap-yellow/80">💡 <strong>机遇：</strong>3D DRAM更依赖刻蚀、薄膜、键合等技术，而非EUV光刻。中国厂商在成熟制程设备上的积累，有望在3D DRAM时代实现弯道超车。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SUPPLY CHAIN SECTION ── -->
+<section id="supply" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-title-wrap reveal mb-12">
+      <h2 class="text-3xl font-black text-white">Supply Chain<br><span class="text-gradient-cyan text-2xl">产业链关键供应商</span></h2>
+    </div>
+
+    <!-- Supply Chain Flow -->
+    <div class="bento-grid">
+      <!-- Equipment -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-12 reveal">
+        <h3 class="text-lg font-bold text-white mb-5"><i class="fa-solid fa-gears text-ap-purple/60 mr-2"></i>Equipment · 设备 <span class="text-xs text-white/40 font-normal ml-2">Global Leader → China Alternative</span></h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-xs text-white/30 uppercase tracking-wider border-b border-white/5">
+                <th class="text-left pb-3">Category</th>
+                <th class="text-left pb-3">Global Leaders</th>
+                <th class="text-left pb-3">China Alternative</th>
+                <th class="text-center pb-3">Localization</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="border-t border-white/5">
+                <td class="py-2.5 text-white/60">PVD/CVD Deposition</td>
+                <td class="py-2.5 text-white/80">AMAT · Lam Research · TEL</td>
+                <td class="py-2.5 text-ap-green">北方华创 NAURA · 中微 AMEC</td>
+                <td class="py-2.5 text-center"><span class="text-xs px-2 py-0.5 rounded-full bg-ap-yellow/10 text-ap-yellow border border-ap-yellow/20">~30%</span></td>
+              </tr>
+              <tr class="border-t border-white/5">
+                <td class="py-2.5 text-white/60">Etch</td>
+                <td class="py-2.5 text-white/80">Lam · TEL · SPTS</td>
+                <td class="py-2.5 text-ap-green">中微公司 AMEC</td>
+                <td class="py-2.5 text-center"><span class="text-xs px-2 py-0.5 rounded-full bg-ap-yellow/10 text-ap-yellow border border-ap-yellow/20">~25%</span></td>
+              </tr>
+              <tr class="border-t border-white/5">
+                <td class="py-2.5 text-white/60">CMP</td>
+                <td class="py-2.5 text-white/80">AMAT · Ebara</td>
+                <td class="py-2.5 text-ap-green">华海清科</td>
+                <td class="py-2.5 text-center"><span class="text-xs px-2 py-0.5 rounded-full bg-ap-orange/10 text-ap-orange border border-ap-orange/20">~15%</span></td>
+              </tr>
+              <tr class="border-t border-white/5">
+                <td class="py-2.5 text-white/60">Hybrid Bonder</td>
+                <td class="py-2.5 text-white/80">EVG · Besi</td>
+                <td class="py-2.5 text-ap-cyan font-semibold">华海清科 🔥</td>
+                <td class="py-2.5 text-center"><span class="text-xs px-2 py-0.5 rounded-full bg-ap-orange/10 text-ap-orange border border-ap-orange/20">~10%</span></td>
+              </tr>
+              <tr class="border-t border-white/5">
+                <td class="py-2.5 text-white/60">Inspection AOI</td>
+                <td class="py-2.5 text-white/80">Camtek · <strong class="text-white/80">KLA (60%+)</strong></td>
+                <td class="py-2.5 text-ap-green">中科飞测 · 精测电子</td>
+                <td class="py-2.5 text-center"><span class="text-xs px-2 py-0.5 rounded-full bg-ap-pink/10 text-ap-pink border border-ap-pink/20">16.4% ⚠️</span></td>
+              </tr>
+              <tr class="border-t border-white/5">
+                <td class="py-2.5 text-white/60">Grinding/Dicing</td>
+                <td class="py-2.5 text-white/80">Disco</td>
+                <td class="py-2.5 text-ap-green">华卓精科</td>
+                <td class="py-2.5 text-center"><span class="text-xs px-2 py-0.5 rounded-full bg-ap-yellow/10 text-ap-yellow border border-ap-yellow/20">~20%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Materials -->
+    <div class="bento-grid mt-6">
+      <div class="bento-item glass rounded-2xl p-6 col-span-6 reveal">
+        <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-flask text-ap-green/60 mr-2"></i>Key Materials · 关键材料</h3>
+        <div class="space-y-3">
+          <div class="p-3 rounded-xl bg-white/3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm font-semibold text-white">EMC 环氧塑封料</span>
+              <span class="text-xs text-white/30">Sumitomo Bakelite</span>
+            </div>
+            <div class="text-xs text-ap-green">替代: 宏昌电子 · 华海诚科</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm font-semibold text-white">Underfill 底部填充</span>
+              <span class="text-xs text-white/30">Henkel · Namihaya</span>
+            </div>
+            <div class="text-xs text-ap-green">替代: 德高化成 · 烟台德邦</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm font-semibold text-white">ABF Film</span>
+              <span class="text-xs text-ap-pink">Ajinomoto · ⚠️暂无替代</span>
+            </div>
+            <div class="text-xs text-white/40">No China alternative yet</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm font-semibold text-white">Photosensitive PI 感光聚酰亚胺</span>
+              <span class="text-xs text-white/30">JSR · Hitachi</span>
+            </div>
+            <div class="text-xs text-ap-green">替代: 鼎龙控股 · 德高化成</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/3">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm font-semibold text-white">焊锡球 Solder Ball</span>
+              <span class="text-xs text-white/30">Senju Metal · MK Electron</span>
+            </div>
+            <div class="text-xs text-ap-green">替代: 尽快电子</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OSAT Competition -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-6 reveal delay-200">
+        <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building text-ap-orange/60 mr-2"></i>Global OSAT Players · 封测厂商</h3>
+        <div class="space-y-3">
+          <div class="p-3 rounded-xl bg-ap-cyan/5 border border-ap-cyan/20">
+            <div class="text-sm font-bold text-ap-cyan mb-1">🏭 Fab-lite 阵营</div>
+            <div class="text-xs text-white/60 space-y-1">
+              <div><strong>台积电 TSMC</strong> — CoWoS · InFO · SoIC</div>
+              <div><strong>三星 Samsung</strong> — FOPLP · X-Cube</div>
+              <div><strong>英特尔 Intel</strong> — Foveros · EMIB · 3D Foveros</div>
+            </div>
+          </div>
+          <div class="p-3 rounded-xl bg-ap-purple/5 border border-ap-purple/20">
+            <div class="text-sm font-bold text-ap-purple mb-1">📦 OSAT 阵营</div>
+            <div class="text-xs text-white/60 space-y-1">
+              <div><strong>日月光 ASE</strong> — FOCoS · SiP · 全球最大</div>
+              <div><strong>长电科技 JCET</strong> — 国内最强2.5D/3D · 接近台积电</div>
+              <div><strong>通富微电 TFME</strong> — AMD MI300合作 · Chiplet经验丰富</div>
+              <div><strong>华天科技 HUADA</strong> — 先进封装布局</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHALLENGES SECTION ── -->
+<section id="challenge" class="relative py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-title-wrap reveal mb-12">
+      <h2 class="text-3xl font-black text-white">5 Core Challenges<br><span class="text-gradient-cyan text-2xl">五大核心技术挑战</span></h2>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Challenge 1: Yield -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-4 bento-card reveal" style="--mx:50%;--my:30%">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-ap-orange/10 border border-ap-orange/20 flex items-center justify-center text-xl">⚠️</div>
+          <div>
+            <div class="text-xs text-ap-orange/60 uppercase tracking-wider">Challenge 01</div>
+            <div class="text-sm font-bold text-white">良率危机<br><span class="text-xs text-white/40 font-normal">Yield Crisis</span></div>
+          </div>
+        </div>
+        <div class="mb-4 p-3 rounded-xl bg-white/3 text-center">
+          <div class="text-xs text-white/40 mb-1">16-Layer Stack Final Yield</div>
+          <div class="font-mono text-xs text-white/50">GPU 95% × HBM 85% × Bond 90%</div>
+          <div class="text-3xl font-black text-ap-orange mt-2">≈ 72.7%</div>
+        </div>
+        <div class="space-y-1.5 text-xs text-white/50">
+          <div>· 冗余修复机制</div>
+          <div>· 分区键合屏蔽</div>
+          <div>· Chiplet故障隔离</div>
+        </div>
+      </div>
+
+      <!-- Challenge 2: Thermal -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-4 bento-card reveal delay-100" style="--mx:50%;--my:30%">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-ap-pink/10 border border-ap-pink/20 flex items-center justify-center text-xl">🌡️</div>
+          <div>
+            <div class="text-xs text-ap-pink/60 uppercase tracking-wider">Challenge 02</div>
+            <div class="text-sm font-bold text-white">热管理困境<br><span class="text-xs text-white/40 font-normal">Thermal Bottleneck</span></div>
+          </div>
+        </div>
+        <div class="mb-4 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white/50">GPU底层</span>
+            <span class="text-ap-orange font-semibold">0.8-1.0 W/mm²</span>
+          </div>
+          <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-ap-orange to-ap-pink rounded-full" style="width:65%"></div>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white/50">局部热点</span>
+            <span class="text-ap-pink font-semibold">>1.5 W/mm² ⚠️</span>
+          </div>
+          <div class="h-2 rounded-full bg-white/5 overflow-hidden">
+            <div class="h-full bg-ap-pink rounded-full" style="width:100%"></div>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white/50">风冷极限</span>
+            <span class="text-white/40">~0.5 W/mm²</span>
+          </div>
+        </div>
+        <div class="space-y-1.5 text-xs text-white/50">
+          <div>· 背面冷却技术</div>
+          <div>· 微流道液冷</div>
+          <div>· 金刚石填充TIM</div>
+        </div>
+      </div>
+
+      <!-- Challenge 3: Power -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-4 bento-card reveal delay-200" style="--mx:50%;--my:30%">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-ap-yellow/10 border border-ap-yellow/20 flex items-center justify-center text-xl">⚡</div>
+          <div>
+            <div class="text-xs text-ap-yellow/60 uppercase tracking-wider">Challenge 03</div>
+            <div class="text-sm font-bold text-white">功耗密度<br><span class="text-xs text-white/40 font-normal">Power Density</span></div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="text-xs text-white/40 mb-2">AI Accelerator Energy Distribution</div>
+          <div class="flex h-6 rounded-full overflow-hidden gap-0.5">
+            <div class="bg-ap-cyan/60 flex items-center justify-center text-[10px] font-bold text-white" style="width:40%">40%</div>
+            <div class="bg-ap-orange/60 flex items-center justify-center text-[10px] font-bold text-white" style="width:60%">60% Data</div>
+          </div>
+          <div class="text-xs text-white/30 mt-1 text-center">Data Movement vs Computation</div>
+        </div>
+        <div class="space-y-1.5 text-xs text-white/50">
+          <div>· 背面供电网络 BSPDN</div>
+          <div>· 存内计算 CiM</div>
+          <div>· 近内存计算优化</div>
+        </div>
+      </div>
+
+      <!-- Challenge 4 & 5 -->
+      <div class="bento-item glass rounded-2xl p-6 col-span-6 bento-card reveal delay-300" style="--mx:50%;--my:30%">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-ap-purple/10 border border-ap-purple/20 flex items-center justify-center text-xl">🎯</div>
+          <div>
+            <div class="text-xs text-ap-purple/60 uppercase tracking-wider">Challenge 04</div>
+            <div class="text-sm font-bold text-white">Hybrid Bonding 精度<br><span class="text-xs text-white/40 font-normal">Precision Requirements</span></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="p-3 rounded-xl bg-white/3 text-center">
+            <div class="text-xl font-black text-ap-purple">&lt;300<span class="text-xs font-normal">nm</span></div>
+            <div class="text-xs text-white/40 mt-1">对准精度</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/3 text-center">
+            <div class="text-xl font-black text-ap-purple">&lt;1<span class="text-xs font-normal">nm</span></div>
+            <div class="text-xs text-white/40 mt-1">表面平整度</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/3 text-center">
+            <div class="text-xl font-black text-ap-purple">50:1</div>
+            <div class="text-xs text-white/40 mt-1">TSV深宽比</div>
+          </div>
+        </div>
+        <div class="text-xs text-white/50">
+          突破方向：华海清科 · 北方华创 · 中微公司
+        </div>
+      </div>
+
+      <div class="bento-item glass rounded-2xl p-6 col-span-6 bento-card reveal delay-400" style="--mx:50%;--my:30%">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-ap-green/10 border border-ap-green/20 flex items-center justify-center text-xl">🔬</div>
+          <div>
+            <div class="text-xs text-ap-green/60 uppercase tracking-wider">Challenge 05</div>
+            <div class="text-sm font-bold text-white">测试与可靠性<br><span class="text-xs text-white/40 font-normal">Test & Reliability</span></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-4 gap-2 mb-4">
+          <div class="p-2.5 rounded-lg bg-white/3 text-center">
+            <div class="text-xs font-bold text-white">KGD</div>
+            <div class="text-[10px] text-white/40">Known Good Die</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white/3 text-center">
+            <div class="text-xs font-bold text-white">TCT</div>
+            <div class="text-[10px] text-white/40">-55°C~125°C</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white/3 text-center">
+            <div class="text-xs font-bold text-white">HAST</div>
+            <div class="text-[10px] text-white/40">高加速测试</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white/3 text-center">
+            <div class="text-xs font-bold text-white">DPA</div>
+            <div class="text-[10px] text-white/40">破坏性分析</div>
+          </div>
+        </div>
+        <div class="text-xs text-white/50">
+          国产检测三雄：中科飞测 · 精测电子 · 中科飞测
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Breakthrough -->
+    <div class="mt-8 reveal">
+      <div class="rounded-2xl p-6 border border-ap-cyan/20 bg-gradient-to-r from-ap-cyan/5 to-ap-purple/5">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">🎯</div>
+          <div>
+            <div class="text-sm font-bold text-white mb-1">Strategic Breakthrough Point · 战略突破口</div>
+            <p class="text-xs text-white/50 leading-relaxed">华海清科的 <span class="text-ap-cyan font-semibold">Hybrid Bonding 设备</span> 是国产替代最关键的"卡脖子"环节。若能在2026年前实现 <span class="text-white font-semibold">9μm pitch bonding</span> 量产，将打开国产3D GPU大门。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="relative py-12 px-6 border-t border-white/5">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-ap-cyan to-ap-purple flex items-center justify-center">
+        <i class="fa-solid fa-microchip text-xs text-white"></i>
+      </div>
+      <div>
+        <div class="text-sm font-semibold text-white">Advanced Packaging Knowledge Base</div>
+        <div class="text-xs text-white/30">Semiconductor Engineering · 行行查 · 2026</div>
+      </div>
+    </div>
+    <div class="text-xs text-white/30">
+      Data Sources: Yole Group · SEMI · CSIA · 行行查研究中心 · 国泰海通证券 · 中泰证券 · 国盛证券
+    </div>
+  </div>
+</footer>
+
+<!-- ── JAVASCRIPT ── -->
+<script>
+'use strict';
+
+// ── Cursor Glow ──
+const cursorGlow = document.getElementById('cursor-glow');
+document.addEventListener('mousemove', (e) => {
+  gsap.to(cursorGlow, {
+    x: e.clientX,
+    y: e.clientY,
+    duration: 0.6,
+    ease: 'power2.out'
+  });
+});
+
+// ── Scroll Progress ──
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById('scroll-progress').style.width = progress + '%';
+});
+
+// ── Intersection Observer for Reveals ──
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -60px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+  observer.observe(el);
+});
+
+// ── Counter Animation ──
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseFloat(el.dataset.target);
+      if (!target) return;
+      const isDecimal = target % 1 !== 0;
+      gsap.fromTo(el,
+        { textContent: '0' },
+        {
+          textContent: target,
+          duration: 2,
+          ease: 'power2.out',
+          snap: { textContent: isDecimal ? 0.1 : 1 },
+          onUpdate: function() {
+            const val = parseFloat(el.textContent);
+            el.textContent = (isDecimal ? val.toFixed(1) : Math.round(val));
+          }
+        }
+      );
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+// ── Progress Bar Animation ──
+const progressBarObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const bar = entry.target.querySelector('.h-full');
+      if (bar) gsap.to(bar, { width: '57%', duration: 2, ease: 'power2.out', delay: 0.5 });
+      progressBarObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.bento-item').forEach(el => {
+  if (el.querySelector('.h-full.bg-ap-cyan')) progressBarObserver.observe(el);
+});
+
+// ── Section Navigation ──
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 100;
+    if (scrollY >= top) current = section.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('onclick')?.includes(current)) link.classList.add('active');
+  });
+});
+
+window.scrollToSection = function(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+};
+
+// ── Bento Card Mouse Tracking ──
+document.querySelectorAll('.bento-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--mx', x + '%');
+    card.style.setProperty('--my', y + '%');
+  });
+});
+
+// ── Parallax on Scroll ──
+gsap.registerPlugin(ScrollTrigger);
+document.querySelectorAll('.big-num').forEach((el, i) => {
+  gsap.fromTo(el,
+    { y: 30, opacity: 0 },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      ease: 'power3.out',
+      delay: i * 0.15,
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    }
+  );
+});
+
+// ── Chart.js Global Config ──
+Chart.defaults.color = 'rgba(255,255,255,0.4)';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+Chart.defaults.font.family = 'Inter';
+
+// ── Market Chart ──
+const marketCtx = document.getElementById('marketChart').getContext('2d');
+const marketGradient1 = marketCtx.createLinearGradient(0, 0, 0, 280);
+marketGradient1.addColorStop(0, 'rgba(0,212,255,0.3)');
+marketGradient1.addColorStop(1, 'rgba(0,212,255,0)');
+
+const marketGradient2 = marketCtx.createLinearGradient(0, 0, 0, 280);
+marketGradient2.addColorStop(0, 'rgba(168,85,247,0.3)');
+marketGradient2.addColorStop(1, 'rgba(168,85,247,0)');
+
+new Chart(marketCtx, {
+  type: 'line',
+  data: {
+    labels: ['2019','2020','2021','2022','2023','2024','2025E','2026E','2027E','2028E','2029E'],
+    datasets: [
+      {
+        label: 'Global ($B)',
+        data: [290, 310, 335, 355, 375, 400, 445, 495, 555, 620, 700],
+        borderColor: '#00d4ff',
+        backgroundColor: marketGradient1,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#00d4ff',
+      },
+      {
+        label: 'China (¥B)',
+        data: [180, 210, 250, 310, 380, 513, 600, 700, 820, 920, 1000],
+        borderColor: '#a855f7',
+        backgroundColor: marketGradient2,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#a855f7',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        position: 'top',
+        align: 'end',
+        labels: { boxWidth: 12, usePointStyle: true, pointStyle: 'circle' }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(10,10,15,0.9)',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        padding: 12,
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        ticks: { font: { size: 11 } }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        ticks: {
+          font: { size: 11 },
+          callback: v => v >= 1000 ? '¥' + v : '$' + v + 'B'
+        }
+      }
+    },
+    animation: {
+      duration: 1500,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// ── Bonder Market Chart ──
+const bonderCtx = document.getElementById('bonderChart').getContext('2d');
+const bonderGradient = bonderCtx.createLinearGradient(0, 0, 0, 200);
+bonderGradient.addColorStop(0, 'rgba(255,107,53,0.4)');
+bonderGradient.addColorStop(1, 'rgba(255,107,53,0)');
+
+new Chart(bonderCtx, {
+  type: 'bar',
+  data: {
+    labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+    datasets: [{
+      label: 'Bonder Market (¥B)',
+      data: [100, 140, 190, 240, 270, 300],
+      backgroundColor: bonderGradient,
+      borderColor: '#ff6b35',
+      borderWidth: 2,
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(10,10,15,0.9)',
+        borderColor: 'rgba(255,107,53,0.3)',
+        borderWidth: 1,
+        padding: 12,
+        callbacks: {
+          label: ctx => `¥${ctx.parsed.y} Billion`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { size: 11 } }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        ticks: {
+          font: { size: 11 },
+          callback: v => '¥' + v + 'B'
+        }
+      }
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// ── Stagger Bento Grid on Load ──
+gsap.fromTo('.bento-item',
+  { y: 40, opacity: 0 },
+  {
+    y: 0, opacity: 1, duration: 0.6,
+    stagger: 0.08,
+    ease: 'power2.out',
+    delay: 0.3
+  }
+);
+</script>
+</body>
+</html>
